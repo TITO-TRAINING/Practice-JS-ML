@@ -1,0 +1,36 @@
+{
+  "name": "practice-js-ml",
+  "version": "1.0.0",
+  "description": "- This document provides the list of important technologies that would be used to implement, the objectives to be achieved and the progress of the project.",
+  "scripts": {
+    "dev": "parcel src/resources/pages/index.html",
+    "json-server": "json-server --watch src/server/db.json --port 3000",
+    "prepare": "husky install",
+    "build": "parcel build src/pages/index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.45.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsdoc": "^46.4.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "husky": "^8.0.3",
+    "json-server": "^0.17.3",
+    "lint-staged": "^13.2.3",
+    "parcel-bundler": "^1.12.5",
+    "posthtml-doctype": "^1.1.1",
+    "posthtml-include": "^1.7.4",
+    "prettier": "^3.0.0",
+    "sass": "^1.63.6"
+  },
+  "lint-staged": {
+    "*.{js,jsx,json,css,scss,md}": [
+      "eslint --fix --max-warnings=0"
+    ]
+  }
+}
