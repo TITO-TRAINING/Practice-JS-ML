@@ -8,6 +8,17 @@
     <link rel="stylesheet" href="../stylesheets/main.scss" />
   </head>
   <body>
+    <div class="container">
+      <h1>Book Management</h1>
+
+      <form id="book-form">
+        <input type="text" id="title" placeholder="Title" required />
+        <input type="text" id="author" placeholder="Author" required />
+        <button type="submit">Add Book</button>
+      </form>
+      <div id="book-list"></div>
+    </div>
+
     <script src="../../app.js"></script>
   </body>
 </html>
