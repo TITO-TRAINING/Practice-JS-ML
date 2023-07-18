@@ -1,24 +1,18 @@
 {
   "books": [
     {
-      "title": "Sách 1",
-      "author": "Nguyễn Văn A",
-      "id": 1
-    },
-    {
-      "title": "ád",
-      "author": "ádsd",
-      "id": 2
+      "title": "ư",
+      "author": "s",
+      "genre": "a",
+      "publishedYear": "2",
+      "id": 6
     },
     {
       "title": "ư",
-      "author": "q",
-      "id": 3
-    },
-    {
-      "title": "q",
-      "author": "e",
-      "id": 4
+      "author": "s",
+      "genre": "d",
+      "publishedYear": "2",
+      "id": 7
     }
   ]
 }

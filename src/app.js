@@ -1,29 +1,29 @@
-import BookController from './controllers/bookController';
 import BookFormView from './views/BookFormView ';
 import BookListView from './views/BookListView';
+import BookController from './controllers/BookController';
 
-const bookModel = {
-  books: [],
-  setBooks(books) {
-    this.books = books;
-  },
-  getBooks() {
-    return this.books;
-  },
-  addBook(book) {
-    this.books.push(book);
-  },
-  deleteBook(id) {
-    this.books = this.books.filter((book) => book.id !== id);
-  },
-};
-const bookListView = new BookListView();
-const bookFormView = new BookFormView();
-const bookController = new BookController(
-  bookModel,
-  bookListView,
-  bookFormView,
-);
+class App {
+  constructor() {
+    this.controller = new BookController();
+    this.formView = new BookFormView();
+    this.listView = new BookListView(this.controller);
 
-// Fetch and display initial books
-bookController.fetchBooks();
+    this.controller.setView(this.formView, this.listView);
+    this.formView.setOnSubmit(
+      this.controller.handleFormSubmit.bind(this.controller),
+    );
+    this.listView.setOnEdit(this.controller.handleEdit.bind(this.controller));
+    this.listView.setOnDelete(
+      this.controller.handleDelete.bind(this.controller),
+    );
+  }
+
+  start() {
+    this.listView.render();
+    this.formView.render();
+  }
+}
+
+const app = new App();
+app.start();
+app.controller.fetchBooks();

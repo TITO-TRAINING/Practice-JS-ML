@@ -1,71 +1,98 @@
-import Book from '../models/bookModel';
+import axios from 'axios';
 
 class BookController {
-  constructor(model, bookListView, bookFormView) {
-    this.model = model;
-    this.bookListView = bookListView;
-    this.bookFormView = bookFormView;
-
-    this.bookFormView.bindSubmitForm(this.handleAddBook.bind(this));
+  constructor() {
+    this.BASE_URL = 'http://localhost:3000/books';
+    this.books = [];
   }
 
-  async fetchBooks() {
-    try {
-      const response = await fetch('http://localhost:3000/books');
-      const data = await response.json();
-      this.model.setBooks(data);
-      this.bookListView.displayBooks(this.model.getBooks());
-    } catch (error) {
-      console.error('Error fetching books:', error);
+  setView(formView, listView) {
+    this.formView = formView;
+    this.listView = listView;
+  }
+
+  async handleFormSubmit(title, author, genre, publishedYear) {
+    if (this.currentBook) {
+      await this.updateBook(title, author, genre, publishedYear);
+    } else {
+      await this.addBook(title, author, genre, publishedYear);
+    }
+    this.clearForm();
+    this.fetchBooks();
+  }
+
+  handleEdit(bookId) {
+    const foundBook = this.books.find((book) => book.id === bookId);
+    if (foundBook) {
+      this.currentBook = foundBook;
+      this.formView.render(this.currentBook);
+    } else {
+      console.error('Không tìm thấy sách hoặc bookId không hợp lệ:', bookId);
+      // Hiển thị thông báo lỗi hoặc xử lý theo cách khác.
     }
   }
 
-  async addBook(book) {
+  async handleDelete(bookId) {
+    await this.deleteBook(bookId);
+    this.fetchBooks();
+  }
+
+  async addBook(title = '', author = '', genre = '', publishedYear = '') {
     try {
-      const response = await fetch('http://localhost:3000/books', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(book),
+      const response = await axios.post(this.BASE_URL, {
+        title,
+        author,
+        genre,
+        publishedYear,
       });
-      const data = await response.json();
-      this.model.addBook(data);
-      this.bookListView.displayBooks(this.model.getBooks());
+      this.books.push(response.data);
     } catch (error) {
       console.error('Error adding book:', error);
     }
   }
 
-  async deleteBook(id) {
+  async updateBook(title = '', author = '', genre = '', publishedYear = '') {
+    if (this.currentBook) {
+      try {
+        const updatedBook = { title, author, genre, publishedYear };
+        await axios.put(`${this.BASE_URL}/${this.currentBook.id}`, updatedBook);
+        this.currentBook.title = title;
+        this.currentBook.author = author;
+        this.currentBook.genre = genre;
+        this.currentBook.publishedYear = publishedYear;
+        this.currentBook = null;
+      } catch (error) {
+        console.error('Error updating book:', error);
+      }
+    }
+  }
+
+  async deleteBook(bookId) {
     try {
-      await fetch(`http://localhost:3000/books/${id}`, {
-        method: 'DELETE',
-      });
-      this.model.deleteBook(id);
-      this.bookListView.displayBooks(this.model.getBooks());
+      await axios.delete(`${this.BASE_URL}/${bookId}`);
+      this.books = this.books.filter((book) => book.id !== bookId);
     } catch (error) {
       console.error('Error deleting book:', error);
     }
   }
 
-  async editBook(id, updatedBookData) {
-    if (updatedBookData) {
-      try {
-        await fetch(`http://localhost:3000/books/${id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(updatedBookData),
-        });
-        this.model.updateBook(id, updatedBookData);
-        this.bookListView.displayBooks(this.model.getBooks());
-      } catch (error) {
-        console.error('Error editing book:', error);
+  async fetchBooks() {
+    try {
+      const response = await axios.get(this.BASE_URL);
+      this.books = response.data;
+      if (this.listView) {
+        this.listView.render();
       }
+    } catch (error) {
+      console.error('Error fetching books:', error);
     }
   }
 
-  handleAddBook(formData) {
-    const book = new Book(formData.idBook, formData.title, formData.author);
-    this.addBook(book);
+  clearForm() {
+    // this.currentBook = null;
+    if (this.formView) {
+      this.formView.clearForm();
+    }
   }
 }
 

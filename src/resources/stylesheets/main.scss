@@ -6,117 +6,49 @@ body {
 }
 
 .container {
-  // max-width: 800px;
+  // max-width: 600px;
   margin: 0 auto;
   padding: 20px;
-}
 
-h1 {
-  text-align: center;
-  color: #333;
-}
+  h1 {
+    margin-bottom: 20px;
+  }
 
-#book-list {
-  margin-top: 20px;
-}
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
 
-.book-item {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #fff;
-}
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+  }
 
-.book-item:last-child {
-  margin-bottom: 0;
-}
+  button {
+    padding: 6px 12px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
 
-.book-item p {
-  margin: 0;
-}
+    &:hover {
+      background-color: #45a049;
+    }
+  }
 
-.book-item .book-title {
-  font-weight: bold;
-}
+  .form-group {
+    margin-bottom: 10px;
 
-#book-form {
-  margin-top: 20px;
-  // display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    input[type='text'] {
+      width: 100%;
+      padding: 8px;
+    }
 
-#book-form input[type='text'] {
-  // width: 200px;
-  margin-right: 10px;
-  padding: 5px;
-  font-size: 16px;
-}
-
-#book-form button {
-  padding: 5px 10px;
-  font-size: 16px;
-  background-color: #333;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-#book-form button:hover {
-  background-color: #555;
-}
-
-body {
-  background: #fff;
-}
-
-* {
-  color: #1d2630;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-th,
-td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-}
-td.number {
-  text-align: right;
-}
-
-.edit-btn {
-  display: inline-block;
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
-  border-radius: 4px;
-}
-
-.edit-btn:hover {
-  background-color: #0056b3;
-}
-
-.delete-btn {
-  display: inline-block;
-  background-color: #dc3545;
-  color: #fff;
-  padding: 8px 16px;
-  border: none;
-  cursor: pointer;
-  margin-left: 8px;
-  border-radius: 4px;
-}
-
-.delete-btn:hover {
-  background-color: #c82333;
+    button {
+      margin-right: 10px;
+    }
+  }
 }
