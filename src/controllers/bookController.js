@@ -29,10 +29,37 @@ class BookController {
       });
       const data = await response.json();
       this.model.addBook(data);
-
       this.bookListView.displayBooks(this.model.getBooks());
     } catch (error) {
       console.error('Error adding book:', error);
+    }
+  }
+
+  async deleteBook(id) {
+    try {
+      await fetch(`http://localhost:3000/books/${id}`, {
+        method: 'DELETE',
+      });
+      this.model.deleteBook(id);
+      this.bookListView.displayBooks(this.model.getBooks());
+    } catch (error) {
+      console.error('Error deleting book:', error);
+    }
+  }
+
+  async editBook(id, updatedBookData) {
+    if (updatedBookData) {
+      try {
+        await fetch(`http://localhost:3000/books/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedBookData),
+        });
+        this.model.updateBook(id, updatedBookData);
+        this.bookListView.displayBooks(this.model.getBooks());
+      } catch (error) {
+        console.error('Error editing book:', error);
+      }
     }
   }
 

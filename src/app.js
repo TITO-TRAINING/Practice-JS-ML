@@ -13,6 +13,9 @@ const bookModel = {
   addBook(book) {
     this.books.push(book);
   },
+  deleteBook(id) {
+    this.books = this.books.filter((book) => book.id !== id);
+  },
 };
 const bookListView = new BookListView();
 const bookFormView = new BookFormView();

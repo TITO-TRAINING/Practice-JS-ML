@@ -1,9 +1,9 @@
 class BookListView {
-  constructor(bookController, bookFormView) {
+  constructor(BookController, BookFormView) {
     this.bookList = document.querySelector('#book-list');
     this.booksData = [];
-    this.controller = bookController;
-    this.bookFormView = bookFormView;
+    this.controller = BookController;
+    this.bookFormView = BookFormView;
   }
 
   displayBooks(books) {
@@ -37,7 +37,6 @@ class BookListView {
       data.forEach((value, index) => {
         const td = document.createElement('td');
         if (index === data.length - 1) {
-          // Thêm nút "Xoá" và "Sửa" vào cột cuối cùng
           const editButton = document.createElement('button');
           editButton.textContent = 'Edit';
           editButton.classList.add('edit-btn');
@@ -65,8 +64,27 @@ class BookListView {
 
     table.appendChild(tbody);
 
-    // Thêm bảng vào giao diện
     this.bookList.appendChild(table);
+  }
+  handleEditBook(id) {
+    const bookToEdit = this.booksData.find((book) => book.id === id);
+    if (bookToEdit) {
+      this.bookFormView.fillForm(bookToEdit);
+      this.bookFormView.bindSubmitForm((formData) => {
+        this.controller.editBook(id, formData);
+      });
+    } else {
+      console.error(`Book with ID ${id} not found.`);
+    }
+  }
+
+  handleDeleteBook(id) {
+    const bookToDelete = this.booksData.find((book) => book.id === id);
+    if (bookToDelete) {
+      this.controller.deleteBook(id);
+    } else {
+      console.error(`Book with ID ${id} not found.`);
+    }
   }
 }
 

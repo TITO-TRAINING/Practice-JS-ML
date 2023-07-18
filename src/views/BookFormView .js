@@ -16,6 +16,11 @@ class BookFormView {
     this.authorInput.value = '';
   }
 
+  fillForm(book) {
+    this.titleInput.value = book.title;
+    this.authorInput.value = book.author;
+  }
+
   bindSubmitForm(handler) {
     this.form.addEventListener('submit', (event) => {
       event.preventDefault();
