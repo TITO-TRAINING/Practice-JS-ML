@@ -1,9 +1,18 @@
 {
   "books": [
     {
-      "title": "lan",
-      "author": "lan",
-      "id": 1
+      "title": "ư",
+      "author": "s",
+      "genre": "a",
+      "publishedYear": "2",
+      "id": 6
+    },
+    {
+      "title": "ư",
+      "author": "s",
+      "genre": "d",
+      "publishedYear": "2",
+      "id": 7
     }
   ]
 }
