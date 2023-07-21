@@ -9,10 +9,17 @@
     },
     {
       "title": "ư",
-      "author": "s",
-      "genre": "d",
+      "author": "ư",
+      "genre": "q",
       "publishedYear": "2",
       "id": 7
+    },
+    {
+      "title": "mai lan",
+      "author": "mai lan",
+      "genre": "mai lan2",
+      "publishedYear": "2",
+      "id": 8
     }
   ]
 }

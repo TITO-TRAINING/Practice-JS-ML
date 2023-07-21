@@ -1,9 +1,9 @@
-import axios from 'axios';
+import BookService from '../services/service';
 
 class BookController {
   constructor() {
-    this.BASE_URL = 'http://localhost:3000/books';
     this.books = [];
+    this.currentBook = null;
   }
 
   setView(formView, listView) {
@@ -21,45 +21,54 @@ class BookController {
     this.fetchBooks();
   }
 
-  handleEdit(bookId) {
-    const foundBook = this.books.find((book) => book.id === bookId);
-    if (foundBook) {
-      this.currentBook = foundBook;
-      this.formView.render(this.currentBook);
-    } else {
-      console.error('Không tìm thấy sách hoặc bookId không hợp lệ:', bookId);
-      // Hiển thị thông báo lỗi hoặc xử lý theo cách khác.
+  async handleEdit(bookId) {
+    try {
+      const foundBook = await BookService.getBookById(bookId);
+      if (foundBook) {
+        this.currentBook = foundBook;
+        this.formView.render(this.currentBook);
+      } else {
+        console.error('Không tìm thấy sách hoặc bookId không hợp lệ:', bookId);
+      }
+    } catch (error) {
+      console.error('Error while fetching book:', error);
     }
   }
 
   async handleDelete(bookId) {
-    await this.deleteBook(bookId);
-    this.fetchBooks();
+    try {
+      await BookService.deleteBook(bookId);
+      this.fetchBooks();
+    } catch (error) {
+      console.error('Error while deleting book:', error);
+    }
   }
 
-  async addBook(title = '', author = '', genre = '', publishedYear = '') {
+  async addBook(title, author, genre, publishedYear) {
     try {
-      const response = await axios.post(this.BASE_URL, {
+      const newBook = await BookService.addBook({
         title,
         author,
         genre,
         publishedYear,
       });
-      this.books.push(response.data);
+      this.books.push(newBook);
     } catch (error) {
       console.error('Error adding book:', error);
     }
   }
 
-  async updateBook(title = '', author = '', genre = '', publishedYear = '') {
+  async updateBook(title, author, genre, publishedYear) {
     if (this.currentBook) {
       try {
-        const updatedBook = { title, author, genre, publishedYear };
-        await axios.put(`${this.BASE_URL}/${this.currentBook.id}`, updatedBook);
-        this.currentBook.title = title;
-        this.currentBook.author = author;
-        this.currentBook.genre = genre;
-        this.currentBook.publishedYear = publishedYear;
+        const updatedBook = {
+          ...this.currentBook,
+          title,
+          author,
+          genre,
+          publishedYear,
+        };
+        await BookService.updateBook(this.currentBook.id, updatedBook);
         this.currentBook = null;
       } catch (error) {
         console.error('Error updating book:', error);
@@ -67,19 +76,9 @@ class BookController {
     }
   }
 
-  async deleteBook(bookId) {
-    try {
-      await axios.delete(`${this.BASE_URL}/${bookId}`);
-      this.books = this.books.filter((book) => book.id !== bookId);
-    } catch (error) {
-      console.error('Error deleting book:', error);
-    }
-  }
-
   async fetchBooks() {
     try {
-      const response = await axios.get(this.BASE_URL);
-      this.books = response.data;
+      this.books = await BookService.getAllBooks();
       if (this.listView) {
         this.listView.render();
       }
@@ -89,7 +88,7 @@ class BookController {
   }
 
   clearForm() {
-    // this.currentBook = null;
+    this.currentBook = null;
     if (this.formView) {
       this.formView.clearForm();
     }
