@@ -1,6 +1,6 @@
 import BookFormView from './views/BookFormView ';
 import BookListView from './views/BookListView';
-import BookController from './controllers/BookController';
+import BookController from './controllers/bookController';
 
 class App {
   constructor() {
