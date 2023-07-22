@@ -18,8 +18,13 @@ class BookController {
       await this.addBook(title, author, genre, publishedYear);
     }
 
-    this.fetchBooks();
-    this.formView.clearForm();
+    try {
+      await this.fetchBooks();
+      this.formView.clearForm();
+      this.formView.showSuccessMessage('Book saved successfully.');
+    } catch (error) {
+      this.formView.showErrorMessage('Error fetching books. Please try again.');
+    }
   }
 
   async handleEdit(bookId) {
@@ -27,21 +32,26 @@ class BookController {
       const foundBook = await BookService.getBookById(bookId);
       if (foundBook) {
         this.currentBook = foundBook;
-        this.formView.render(this.currentBook); // Render with the book data if available
+        this.formView.render(this.currentBook);
       } else {
-        console.error('Không tìm thấy sách hoặc bookId không hợp lệ:', bookId);
+        this.formView.showErrorMessage('Book not found or invalid bookId.');
       }
     } catch (error) {
-      console.error('Error while fetching book:', error);
+      this.formView.showErrorMessage(
+        'Error while fetching book. Please try again.',
+      );
     }
   }
 
   async handleDelete(bookId) {
     try {
       await BookService.deleteBook(bookId);
-      this.fetchBooks();
+      await this.fetchBooks();
+      this.listView.showSuccessMessage('Book deleted successfully.');
     } catch (error) {
-      console.error('Error while deleting book:', error);
+      this.listView.showErrorMessage(
+        'Error while deleting book. Please try again.',
+      );
     }
   }
 

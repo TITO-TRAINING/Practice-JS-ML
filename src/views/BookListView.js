@@ -1,10 +1,12 @@
+import Toast from './Toast';
+
 class BookListView {
   constructor(controller) {
     this.onEditCallback = () => {};
     this.onDeleteCallback = () => {};
     this.listContainer = document.getElementById('listContainer');
     this.controller = controller;
-
+    this.toast = new Toast();
     this.listContainer.addEventListener(
       'click',
       this.handleButtonClick.bind(this),
@@ -17,6 +19,14 @@ class BookListView {
 
   setOnDelete(callback) {
     this.onDeleteCallback = callback;
+  }
+
+  showErrorMessage(message) {
+    this.toast.show(message, 'error');
+  }
+
+  showSuccessMessage(message) {
+    this.toast.show(message, 'success');
   }
 
   render() {

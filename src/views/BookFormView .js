@@ -1,6 +1,8 @@
+import Toast from './Toast';
 class BookFormView {
   constructor() {
     this.formContainer = document.getElementById('formContainer');
+    this.toast = new Toast();
     this.bindEvents();
   }
 
@@ -10,6 +12,14 @@ class BookFormView {
 
   setOnCancelButtonClick(callback = () => {}) {
     this.onCancelButtonClickCallback = callback;
+  }
+
+  showErrorMessage(message) {
+    this.toast.show(message, 'error');
+  }
+
+  showSuccessMessage(message) {
+    this.toast.show(message, 'success');
   }
 
   bindEvents() {

@@ -52,3 +52,29 @@ body {
     }
   }
 }
+/* Add this CSS to your styles file or <style> tag in HTML */
+.toast-container {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+}
+
+.toast {
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.toast.error {
+  background-color: red;
+  color: white;
+}
+
+.toast.success {
+  background-color: green;
+  color: white;
+}
