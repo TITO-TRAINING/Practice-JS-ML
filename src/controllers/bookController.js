@@ -17,8 +17,9 @@ class BookController {
     } else {
       await this.addBook(title, author, genre, publishedYear);
     }
-    this.clearForm();
+
     this.fetchBooks();
+    this.formView.clearForm();
   }
 
   async handleEdit(bookId) {
@@ -26,7 +27,7 @@ class BookController {
       const foundBook = await BookService.getBookById(bookId);
       if (foundBook) {
         this.currentBook = foundBook;
-        this.formView.render(this.currentBook);
+        this.formView.render(this.currentBook); // Render with the book data if available
       } else {
         console.error('Không tìm thấy sách hoặc bookId không hợp lệ:', bookId);
       }
@@ -84,13 +85,6 @@ class BookController {
       }
     } catch (error) {
       console.error('Error fetching books:', error);
-    }
-  }
-
-  clearForm() {
-    this.currentBook = null;
-    if (this.formView) {
-      this.formView.clearForm();
     }
   }
 }

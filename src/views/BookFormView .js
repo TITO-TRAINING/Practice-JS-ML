@@ -8,18 +8,33 @@ class BookFormView {
     this.onSubmitCallback = callback;
   }
 
+  setOnCancelButtonClick(callback = () => {}) {
+    this.onCancelButtonClickCallback = callback;
+  }
+
   bindEvents() {
     this.formContainer.addEventListener('submit', this.handleSubmit.bind(this));
     this.formContainer.addEventListener(
       'click',
       this.handleButtonClick.bind(this),
     );
+    const cancelButton = this.formContainer.querySelector('#cancelButton');
+    if (cancelButton) {
+      cancelButton.addEventListener('click', () => {
+        if (this.onCancelButtonClickCallback) {
+          this.onCancelButtonClickCallback();
+        }
+      });
+    }
   }
 
   render(book) {
-    const { title, author, genre, publishedYear } = book
-      ? book
-      : { title: '', author: '', genre: '', publishedYear: '' };
+    const { title, author, genre, publishedYear } = book || {
+      title: '',
+      author: '',
+      genre: '',
+      publishedYear: '',
+    };
 
     const formHtml = `
       <form id="bookForm">
@@ -67,14 +82,19 @@ class BookFormView {
   }
 
   handleButtonClick(event) {
+    console.log('Cancel button clicked');
     if (event.target.id === 'cancelButton') {
+      console.log('Clearing the form...');
       this.clearForm();
     }
   }
 
   clearForm() {
     if (this.form) {
-      this.form.reset();
+      this.form.querySelector('#titleInput').value = '';
+      this.form.querySelector('#authorInput').value = '';
+      this.form.querySelector('#genreInput').value = '';
+      this.form.querySelector('#publishedYearInput').value = '';
     }
   }
 }
