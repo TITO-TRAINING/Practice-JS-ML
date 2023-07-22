@@ -34,7 +34,7 @@ class BookController {
       const foundBook = await BookService.getBookById(bookId);
       if (foundBook) {
         this.currentBook = foundBook;
-        this.formView.render(this.currentBook); // Render with the book data if available
+        this.formView.render(this.currentBook);
       } else {
         this.formView.showErrorMessage('Book not found or invalid bookId.');
       }
