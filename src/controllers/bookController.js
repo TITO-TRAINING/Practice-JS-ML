@@ -22,6 +22,8 @@ class BookController {
       await this.fetchBooks();
       this.formView.clearForm();
       this.formView.showSuccessMessage('Book saved successfully.');
+      this.currentBook = null; // Reset currentBook after successful update or add
+      this.formView.render(); // Render the form with the updated state (Add button)
     } catch (error) {
       this.formView.showErrorMessage('Error fetching books. Please try again.');
     }

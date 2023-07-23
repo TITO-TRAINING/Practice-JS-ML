@@ -29,6 +29,17 @@ class BookListView {
     this.toast.show(message, 'success');
   }
 
+  handleButtonClick(event) {
+    const button = event.target;
+    if (button.classList.contains('editButton')) {
+      const bookId = button.dataset.id;
+      this.onEditCallback(bookId); // Empty function will be called if not set
+    } else if (button.classList.contains('deleteButton')) {
+      const bookId = button.dataset.id;
+      this.onDeleteCallback(bookId); // Empty function will be called if not set
+    }
+  }
+
   render() {
     const tableHtml = `
       <table>
@@ -69,17 +80,6 @@ class BookListView {
       `,
       )
       .join('');
-  }
-
-  handleButtonClick(event) {
-    const button = event.target;
-    if (button.classList.contains('editButton')) {
-      const bookId = button.dataset.id;
-      this.onEditCallback(bookId); // Empty function will be called if not set
-    } else if (button.classList.contains('deleteButton')) {
-      const bookId = button.dataset.id;
-      this.onDeleteCallback(bookId); // Empty function will be called if not set
-    }
   }
 }
 
