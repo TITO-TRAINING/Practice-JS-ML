@@ -55,7 +55,6 @@ class BookFormView {
   }
 
   handleButtonClick(event) {
-    console.log('Cancel button clicked');
     if (event.target.id === 'cancelButton') {
       console.log('Clearing the form...');
       this.clearForm();

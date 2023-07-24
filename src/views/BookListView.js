@@ -40,7 +40,28 @@ class BookListView {
     }
   }
 
+  generateBookRow(book) {
+    return `
+      <tr>
+        <td>${book.id}</td>
+        <td>${book.title}</td>
+        <td>${book.author}</td>
+        <td>${book.genre}</td>
+        <td>${book.publishedYear}</td>
+        <td>
+          <button class="editButton" data-id="${book.id}">Edit</button>
+          <button class="deleteButton" data-id="${book.id}">Delete</button>
+        </td>
+      </tr>
+    `;
+  }
+
   render() {
+    const booksHtml = this.controller.model
+      .getBooks()
+      .map((book) => this.generateBookRow(book))
+      .join('');
+
     const tableHtml = `
       <table>
         <thead>
@@ -54,32 +75,12 @@ class BookListView {
           </tr>
         </thead>
         <tbody>
-          ${this.generateBookRows()}
+          ${booksHtml}
         </tbody>
       </table>
     `;
 
     this.listContainer.innerHTML = tableHtml;
-  }
-
-  generateBookRows() {
-    return this.controller.books
-      .map(
-        (book) => `
-        <tr>
-          <td>${book.id}</td>
-          <td>${book.title}</td>
-          <td>${book.author}</td>
-          <td>${book.genre}</td>
-          <td>${book.publishedYear}</td>
-          <td>
-            <button class="editButton" data-id="${book.id}">Edit</button>
-            <button class="deleteButton" data-id="${book.id}">Delete</button>
-          </td>
-        </tr>
-      `,
-      )
-      .join('');
   }
 }
 
