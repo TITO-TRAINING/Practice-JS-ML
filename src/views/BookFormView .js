@@ -1,16 +1,21 @@
 import Toast from './Toast';
+
 class BookFormView {
   constructor() {
     this.formContainer = document.getElementById('formContainer');
     this.toast = new Toast();
+    this.form = null;
+    this.onSubmitCallback = () => {};
+    this.onCancelButtonClickCallback = () => {};
+
     this.bindEvents();
   }
 
-  setOnSubmit(callback = () => {}) {
+  setOnSubmit(callback) {
     this.onSubmitCallback = callback;
   }
 
-  setOnCancelButtonClick(callback = () => {}) {
+  setOnCancelButtonClick(callback) {
     this.onCancelButtonClickCallback = callback;
   }
 
@@ -28,14 +33,6 @@ class BookFormView {
       'click',
       this.handleButtonClick.bind(this),
     );
-    const cancelButton = this.formContainer.querySelector('#cancelButton');
-    if (cancelButton) {
-      cancelButton.addEventListener('click', () => {
-        if (this.onCancelButtonClickCallback) {
-          this.onCancelButtonClickCallback();
-        }
-      });
-    }
   }
 
   handleSubmit(event) {
@@ -56,17 +53,19 @@ class BookFormView {
 
   handleButtonClick(event) {
     if (event.target.id === 'cancelButton') {
-      console.log('Clearing the form...');
       this.clearForm();
+
+      // Check if the form was used for editing (book object provided)
+      // If it was, reset the form to "Add" mode
+      if (this.form && this.form.dataset.mode === 'edit') {
+        this.render(); // Render the form without a book object, which sets the button label to "Add"
+      }
     }
   }
 
   clearForm() {
     if (this.form) {
-      this.form.querySelector('#titleInput').value = '';
-      this.form.querySelector('#authorInput').value = '';
-      this.form.querySelector('#genreInput').value = '';
-      this.form.querySelector('#publishedYearInput').value = '';
+      this.form.reset();
     }
   }
 
@@ -79,7 +78,7 @@ class BookFormView {
     };
 
     const formHtml = `
-      <form id="bookForm">
+      <form id="bookForm" data-mode="${book ? 'edit' : 'add'}">
         <div class="form-group">
           <label for="titleInput">Title:</label>
           <input type="text" id="titleInput" placeholder="Title" value="${title}" required>
@@ -109,14 +108,8 @@ class BookFormView {
     const cancelButton = this.formContainer.querySelector('#cancelButton');
     if (cancelButton) {
       cancelButton.addEventListener('click', () => {
-        console.log('Clearing the form...');
         this.clearForm();
-
-        // Check if the form was used for editing (book object provided)
-        // If it was, reset the form to "Add" mode
-        if (book) {
-          this.render(); // Render the form without a book object, which sets the button label to "Add"
-        }
+        this.onCancelButtonClickCallback();
       });
     }
   }

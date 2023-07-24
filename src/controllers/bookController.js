@@ -1,5 +1,5 @@
 import BookModel from '../models/bookModel';
-import bookService from '../services/service';
+import BookService from '../api/BookApi';
 import BookFormView from '../views/BookFormView ';
 import BookListView from '../views/BookListView';
 
@@ -8,6 +8,7 @@ class BookController {
     this.model = new BookModel();
     this.formView = new BookFormView(this);
     this.listView = new BookListView(this);
+    this.bookService = new BookService();
 
     this.formView.setOnSubmit(this.handleFormSubmit.bind(this));
     this.listView.setOnEdit(this.handleEdit.bind(this));
@@ -34,7 +35,15 @@ class BookController {
 
   async handleEdit(bookId) {
     try {
-      const foundBook = await bookService.getBookById(bookId);
+      var foundBook = null;
+      await this.bookService
+        .getBookById(bookId)
+        .then((res) => {
+          foundBook = res.data;
+        })
+        .catch((e) => {
+          console.log('Error when get book by id ', e);
+        });
       if (foundBook) {
         this.model.currentBook = foundBook;
         this.formView.render(this.model.currentBook);
@@ -50,7 +59,9 @@ class BookController {
 
   async handleDelete(bookId) {
     try {
-      await bookService.deleteBook(bookId);
+      await this.bookService.deleteBook(bookId).catch((e) => {
+        console.log('Error when delete book', e);
+      });
       this.model.deleteBook(bookId);
       this.listView.showSuccessMessage('Book deleted successfully.');
       await this.fetchBooks();
@@ -63,12 +74,16 @@ class BookController {
 
   async addBook(title, author, genre, publishedYear) {
     try {
-      const newBook = await bookService.addBook({
-        title,
-        author,
-        genre,
-        publishedYear,
-      });
+      const newBook = await this.bookService
+        .addBook({
+          title,
+          author,
+          genre,
+          publishedYear,
+        })
+        .catch((e) => {
+          console.log('Error when add book', e);
+        });
       this.model.addBook(newBook);
     } catch (error) {
       console.error('Error adding book:', error);
@@ -86,7 +101,11 @@ class BookController {
           genre,
           publishedYear,
         };
-        await bookService.updateBook(this.model.currentBook.id, updatedBook);
+        await this.bookService
+          .updateBook(this.model.currentBook.id, updatedBook)
+          .catch((e) => {
+            console.log('Error when update book', e);
+          });
         this.model.updateBook(updatedBook);
       } catch (error) {
         console.error('Error updating book:', error);
@@ -97,7 +116,15 @@ class BookController {
 
   async fetchBooks() {
     try {
-      const books = await bookService.getAllBooks();
+      var books = null;
+      await this.bookService
+        .getAllBooks()
+        .then((res) => {
+          books = res.data;
+        })
+        .catch((e) => {
+          console.log('Error when fetch books', e);
+        });
       this.model.setBooks(books);
       if (this.listView) {
         this.listView.render();

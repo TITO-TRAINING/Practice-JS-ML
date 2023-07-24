@@ -59,9 +59,8 @@ class BookListView {
   render() {
     const booksHtml = this.controller.model
       .getBooks()
-      .map((book) => this.generateBookRow(book))
+      .map(this.generateBookRow)
       .join('');
-
     const tableHtml = `
       <table>
         <thead>
