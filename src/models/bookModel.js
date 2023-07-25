@@ -1,11 +1,48 @@
-class Book {
-  constructor(id, title, author, genre, publishedYear) {
-    this.id = id;
-    this.title = title;
-    this.author = author;
-    this.genre = genre;
-    this.publishedYear = publishedYear;
+import Book from './book';
+
+class BookModel {
+  constructor() {
+    this.books = [];
+    this.currentBook = null;
+  }
+
+  setBooks(books) {
+    this.books = books.map(
+      (bookData) =>
+        new Book(
+          bookData.id,
+          bookData.title,
+          bookData.author,
+          bookData.genre,
+          bookData.publishedYear,
+        ),
+    );
+  }
+
+  getBooks() {
+    return this.books;
+  }
+
+  addBook(book) {
+    this.books.push(book);
+  }
+
+  updateBook(updatedBook) {
+    const index = this.books.findIndex((book) => book.id === updatedBook.id);
+    if (index !== -1) {
+      this.books[index] = new Book(
+        updatedBook.id,
+        updatedBook.title,
+        updatedBook.author,
+        updatedBook.genre,
+        updatedBook.publishedYear,
+      );
+    }
+  }
+
+  deleteBook(bookId) {
+    this.books = this.books.filter((book) => book.id !== bookId);
   }
 }
 
-export default Book;
+export default BookModel;
