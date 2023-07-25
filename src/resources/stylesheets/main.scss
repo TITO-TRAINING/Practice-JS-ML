@@ -1,0 +1,80 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  // max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+
+  h1 {
+    margin-bottom: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+  }
+
+  button {
+    padding: 6px 12px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+
+    input[type='text'] {
+      width: 100%;
+      padding: 8px;
+    }
+
+    button {
+      margin-right: 10px;
+    }
+  }
+}
+/* Add this CSS to your styles file or <style> tag in HTML */
+.toast-container {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+}
+
+.toast {
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.toast.error {
+  background-color: red;
+  color: white;
+}
+
+.toast.success {
+  background-color: green;
+  color: white;
+}
