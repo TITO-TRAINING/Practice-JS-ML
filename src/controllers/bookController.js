@@ -1,7 +1,7 @@
 import BookModel from '../models/bookModel';
 import BookService from '../api/BookApi';
-import BookFormView from '../views/BookFormView ';
-import BookListView from '../views/BookListView';
+import BookFormView from '../views/components/BookFormView ';
+import BookListView from '../views/components/BookListView';
 
 class BookController {
   constructor() {
@@ -13,6 +13,16 @@ class BookController {
     this.formView.setOnSubmit(this.handleFormSubmit.bind(this));
     this.listView.setOnEdit(this.handleEdit.bind(this));
     this.listView.setOnDelete(this.handleDelete.bind(this));
+
+    this.createBookButton = document.querySelector('.createBook');
+    this.createBookButton.addEventListener(
+      'click',
+      this.handleCreateBookButtonClick.bind(this),
+    );
+  }
+
+  handleCreateBookButtonClick() {
+    this.formView.render();
   }
 
   async handleFormSubmit(title, author, genre, publishedYear) {
@@ -26,8 +36,8 @@ class BookController {
       await this.fetchBooks();
       this.formView.clearForm();
       this.formView.showSuccessMessage('Book saved successfully.');
-      this.model.currentBook = null; // Reset currentBook after successful update or add
-      this.formView.render(); // Render the form with the updated state (Add button)
+      delete this.model.currentBook;
+      this.formView.render();
     } catch (error) {
       this.formView.showErrorMessage('Error saving book. Please try again.');
     }
@@ -35,17 +45,9 @@ class BookController {
 
   async handleEdit(bookId) {
     try {
-      var foundBook = null;
-      await this.bookService
-        .getBookById(bookId)
-        .then((res) => {
-          foundBook = res.data;
-        })
-        .catch((e) => {
-          console.log('Error when get book by id ', e);
-        });
-      if (foundBook) {
-        this.model.currentBook = foundBook;
+      const { data } = await this.bookService.getBookById(bookId);
+      if (data) {
+        this.model.currentBook = data;
         this.formView.render(this.model.currentBook);
       } else {
         this.formView.showErrorMessage('Book not found or invalid bookId.');
@@ -74,16 +76,12 @@ class BookController {
 
   async addBook(title, author, genre, publishedYear) {
     try {
-      const newBook = await this.bookService
-        .addBook({
-          title,
-          author,
-          genre,
-          publishedYear,
-        })
-        .catch((e) => {
-          console.log('Error when add book', e);
-        });
+      const newBook = await this.bookService.addBook({
+        title,
+        author,
+        genre,
+        publishedYear,
+      });
       this.model.addBook(newBook);
     } catch (error) {
       console.error('Error adding book:', error);
@@ -92,20 +90,21 @@ class BookController {
   }
 
   async updateBook(title, author, genre, publishedYear) {
-    if (this.model.currentBook) {
+    const currentBook = this.model.currentBook;
+
+    // Check if there is a current book
+    if (currentBook) {
+      // Create an updated book object with the new information
       try {
         const updatedBook = {
-          ...this.model.currentBook,
+          ...currentBook,
           title,
           author,
           genre,
           publishedYear,
         };
-        await this.bookService
-          .updateBook(this.model.currentBook.id, updatedBook)
-          .catch((e) => {
-            console.log('Error when update book', e);
-          });
+
+        await this.bookService.updateBook(currentBook.id, updatedBook);
         this.model.updateBook(updatedBook);
       } catch (error) {
         console.error('Error updating book:', error);
@@ -116,15 +115,8 @@ class BookController {
 
   async fetchBooks() {
     try {
-      var books = null;
-      await this.bookService
-        .getAllBooks()
-        .then((res) => {
-          books = res.data;
-        })
-        .catch((e) => {
-          console.log('Error when fetch books', e);
-        });
+      const res = await this.bookService.getAllBooks();
+      const books = res.data;
       this.model.setBooks(books);
       if (this.listView) {
         this.listView.render();
@@ -137,7 +129,6 @@ class BookController {
   async init() {
     try {
       await this.fetchBooks();
-      this.formView.render();
     } catch (error) {
       console.error('Error initializing the app:', error);
     }

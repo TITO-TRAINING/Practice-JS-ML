@@ -7,16 +7,10 @@ class BookModel {
   }
 
   setBooks(books) {
-    this.books = books.map(
-      (bookData) =>
-        new Book(
-          bookData.id,
-          bookData.title,
-          bookData.author,
-          bookData.genre,
-          bookData.publishedYear,
-        ),
-    );
+    this.books = books.map((bookData) => {
+      const { id, title, author, genre, publishedYear } = bookData;
+      return new Book(id, title, author, genre, publishedYear);
+    });
   }
 
   getBooks() {
@@ -30,13 +24,8 @@ class BookModel {
   updateBook(updatedBook) {
     const index = this.books.findIndex((book) => book.id === updatedBook.id);
     if (index !== -1) {
-      this.books[index] = new Book(
-        updatedBook.id,
-        updatedBook.title,
-        updatedBook.author,
-        updatedBook.genre,
-        updatedBook.publishedYear,
-      );
+      const { id, title, author, genre, publishedYear } = updatedBook;
+      this.books[index] = new Book(id, title, author, genre, publishedYear);
     }
   }
 

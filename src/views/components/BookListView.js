@@ -41,26 +41,28 @@ class BookListView {
   }
 
   generateBookRow(book) {
+    const { id, title, author, genre, publishedYear } = book;
+
     return `
       <tr>
-        <td>${book.id}</td>
-        <td>${book.title}</td>
-        <td>${book.author}</td>
-        <td>${book.genre}</td>
-        <td>${book.publishedYear}</td>
+        <td>${id}</td>
+        <td>${title}</td>
+        <td>${author}</td>
+        <td>${genre}</td>
+        <td>${publishedYear}</td>
         <td>
-          <button class="editButton" data-id="${book.id}">Edit</button>
-          <button class="deleteButton" data-id="${book.id}">Delete</button>
+          <button class="editButton" data-id="${id}">Edit</button>
+          <button class="deleteButton" data-id="${id}">Delete</button>
         </td>
       </tr>
     `;
   }
 
   render() {
-    const booksHtml = this.controller.model
-      .getBooks()
-      .map(this.generateBookRow)
-      .join('');
+    const books = this.controller.model.getBooks();
+    const bookRows = books.map(this.generateBookRow);
+    const booksHtml = bookRows.join('');
+
     const tableHtml = `
       <table>
         <thead>
@@ -68,7 +70,7 @@ class BookListView {
             <th>ID</th>
             <th>Title</th>
             <th>Author</th>
-            <th>Genre</th>
+            <th>Category</th>
             <th>Published Year</th>
             <th>Action</th>
           </tr>

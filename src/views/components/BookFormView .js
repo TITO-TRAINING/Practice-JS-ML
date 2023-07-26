@@ -3,12 +3,14 @@ import Toast from './Toast';
 class BookFormView {
   constructor() {
     this.formContainer = document.getElementById('formContainer');
+    this.modalOverlay = document.getElementById('modalOverlay');
     this.toast = new Toast();
     this.form = null;
     this.onSubmitCallback = () => {};
     this.onCancelButtonClickCallback = () => {};
-
     this.bindEvents();
+
+    this.hideModal();
   }
 
   setOnSubmit(callback) {
@@ -27,23 +29,33 @@ class BookFormView {
     this.toast.show(message, 'success');
   }
 
+  showModal() {
+    this.formContainer.style.display = 'block';
+    this.modalOverlay.style.display = 'block';
+  }
+
+  hideModal() {
+    this.formContainer.style.display = 'none';
+    this.modalOverlay.style.display = 'none';
+  }
+
   bindEvents() {
-    this.formContainer.addEventListener('submit', this.handleSubmit.bind(this));
-    this.formContainer.addEventListener(
-      'click',
-      this.handleButtonClick.bind(this),
+    this.formContainer.addEventListener('submit', (event) =>
+      this.handleSubmit(event),
+    );
+    this.formContainer.addEventListener('click', (event) =>
+      this.handleButtonClick(event),
     );
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    if (this.form) {
-      const title = this.form.querySelector('#titleInput').value;
-      const author = this.form.querySelector('#authorInput').value;
-      const genre = this.form.querySelector('#genreInput').value;
-      const publishedYear = this.form.querySelector(
-        '#publishedYearInput',
-      ).value;
+    const form = document.querySelector('form');
+    if (form) {
+      const title = form.querySelector('#titleInput').value;
+      const author = form.querySelector('#authorInput').value;
+      const genre = form.querySelector('#category').value;
+      const publishedYear = form.querySelector('#publishedYearInput').value;
 
       if (this.onSubmitCallback) {
         this.onSubmitCallback(title, author, genre, publishedYear);
@@ -70,12 +82,12 @@ class BookFormView {
   }
 
   render(book) {
-    const { title, author, genre, publishedYear } = book || {
-      title: '',
-      author: '',
-      genre: '',
-      publishedYear: '',
-    };
+    const {
+      title = '',
+      author = '',
+      genre = '',
+      publishedYear = '',
+    } = book || {};
 
     const formHtml = `
       <form id="bookForm" data-mode="${book ? 'edit' : 'add'}">
@@ -88,8 +100,8 @@ class BookFormView {
           <input type="text" id="authorInput" placeholder="Author" value="${author}" required>
         </div>
         <div class="form-group">
-          <label for="genreInput">Genre:</label>
-          <input type="text" id="genreInput" placeholder="Genre" value="${genre}" required>
+          <label for="category">Category:</label>
+          <input type="text" id="category" placeholder="Category" value="${genre}" required>
         </div>
         <div class="form-group">
           <label for="publishedYearInput">Published Year:</label>
@@ -110,8 +122,11 @@ class BookFormView {
       cancelButton.addEventListener('click', () => {
         this.clearForm();
         this.onCancelButtonClickCallback();
+        this.hideModal();
       });
     }
+
+    this.showModal();
   }
 }
 
