@@ -41,14 +41,14 @@ class BookListView {
   }
 
   generateBookRow(book) {
-    const { id, title, author, genre, publishedYear } = book;
+    const { id, title, author, category, publishedYear } = book;
 
     return `
       <tr>
         <td>${id}</td>
         <td>${title}</td>
         <td>${author}</td>
-        <td>${genre}</td>
+        <td>${category}</td>
         <td>${publishedYear}</td>
         <td>
           <button class="editButton" data-id="${id}">Edit</button>

@@ -1,11 +1,13 @@
 import Toast from './Toast';
+import FormValidator from './FormValidate';
 
 class BookFormView {
   constructor() {
     this.formContainer = document.getElementById('formContainer');
     this.modalOverlay = document.getElementById('modalOverlay');
     this.toast = new Toast();
-    this.form = null;
+
+    this.form = {};
     this.onSubmitCallback = () => {};
     this.onCancelButtonClickCallback = () => {};
     this.bindEvents();
@@ -54,11 +56,26 @@ class BookFormView {
     if (form) {
       const title = form.querySelector('#titleInput').value;
       const author = form.querySelector('#authorInput').value;
-      const genre = form.querySelector('#category').value;
+      const category = form.querySelector('#category').value;
       const publishedYear = form.querySelector('#publishedYearInput').value;
 
-      if (this.onSubmitCallback) {
-        this.onSubmitCallback(title, author, genre, publishedYear);
+      const errors = FormValidator.validateForm(
+        title,
+        author,
+        category,
+        publishedYear,
+      );
+
+      if (Object.keys(errors).length > 0) {
+        // Show error messages using the Toast class
+        Object.values(errors).forEach((message) =>
+          this.toast.show(message, 'error'),
+        );
+      } else {
+        // Form is valid, call the onSubmitCallback
+        if (this.onSubmitCallback) {
+          this.onSubmitCallback(title, author, category, publishedYear);
+        }
       }
     }
   }
@@ -85,7 +102,7 @@ class BookFormView {
     const {
       title = '',
       author = '',
-      genre = '',
+      category = '',
       publishedYear = '',
     } = book || {};
 
@@ -101,11 +118,11 @@ class BookFormView {
         </div>
         <div class="form-group">
           <label for="category">Category:</label>
-          <input type="text" id="category" placeholder="Category" value="${genre}" required>
+          <input type="text" id="category" placeholder="Category" value="${category}" required>
         </div>
         <div class="form-group">
           <label for="publishedYearInput">Published Year:</label>
-          <input type="number" id="publishedYearInput" placeholder="Published Year" value="${publishedYear}" required>
+          <input type="text" id="publishedYearInput" placeholder="Published Year" value="${publishedYear}" required>
         </div>
         <div class="form-group">
           <button type="submit">${book ? 'Update' : 'Add'}</button>

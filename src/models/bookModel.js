@@ -8,8 +8,8 @@ class BookModel {
 
   setBooks(books) {
     this.books = books.map((bookData) => {
-      const { id, title, author, genre, publishedYear } = bookData;
-      return new Book(id, title, author, genre, publishedYear);
+      const { id, title, author, category, publishedYear } = bookData;
+      return new Book(id, title, author, category, publishedYear);
     });
   }
 
@@ -24,8 +24,8 @@ class BookModel {
   updateBook(updatedBook) {
     const index = this.books.findIndex((book) => book.id === updatedBook.id);
     if (index !== -1) {
-      const { id, title, author, genre, publishedYear } = updatedBook;
-      this.books[index] = new Book(id, title, author, genre, publishedYear);
+      const { id, title, author, category, publishedYear } = updatedBook;
+      this.books[index] = new Book(id, title, author, category, publishedYear);
     }
   }
 

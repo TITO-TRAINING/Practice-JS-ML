@@ -1,4 +1,3 @@
-// views/Toast.js
 class Toast {
   constructor() {
     this.toastContainer = document.createElement('div');
@@ -15,6 +14,7 @@ class Toast {
     setTimeout(() => {
       toast.remove();
     }, 3000); // Remove the toast after 3 seconds
+    console.log('Toast message:', message);
   }
 }
 

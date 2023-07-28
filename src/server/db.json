@@ -1,11 +1,18 @@
 {
   "books": [
     {
-      "title": "Sách 1",
-      "author": "Nguyễn A",
-      "genre": "Tiểu Thuyết",
-      "publishedYear": "2022",
+      "title": "a",
+      "author": "a",
+      "category": "ass",
+      "publishedYear": "22/12/2022",
       "id": 1
+    },
+    {
+      "title": "s",
+      "author": "s",
+      "category": "s",
+      "publishedYear": "22/12/2022",
+      "id": 2
     }
   ]
 }

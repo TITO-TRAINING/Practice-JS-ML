@@ -14,7 +14,7 @@ class BookController {
     this.listView.setOnEdit(this.handleEdit.bind(this));
     this.listView.setOnDelete(this.handleDelete.bind(this));
 
-    this.createBookButton = document.querySelector('.createBook');
+    this.createBookButton = document.querySelector('.create-book');
     this.createBookButton.addEventListener(
       'click',
       this.handleCreateBookButtonClick.bind(this),
@@ -25,18 +25,23 @@ class BookController {
     this.formView.render();
   }
 
-  async handleFormSubmit(title, author, genre, publishedYear) {
+  showSuccessMessage(message) {
+    // Show the success message using the toast
+    this.toast.show(message, 'success');
+  }
+
+  async handleFormSubmit(title, author, category, publishedYear) {
     try {
       if (this.model.currentBook) {
-        await this.updateBook(title, author, genre, publishedYear);
+        await this.updateBook(title, author, category, publishedYear);
       } else {
-        await this.addBook(title, author, genre, publishedYear);
+        await this.addBook(title, author, category, publishedYear);
       }
 
       await this.fetchBooks();
       this.formView.clearForm();
       this.formView.showSuccessMessage('Book saved successfully.');
-      delete this.model.currentBook;
+      this.model.currentBook;
       this.formView.render();
     } catch (error) {
       this.formView.showErrorMessage('Error saving book. Please try again.');
@@ -74,12 +79,12 @@ class BookController {
     }
   }
 
-  async addBook(title, author, genre, publishedYear) {
+  async addBook(title, author, category, publishedYear) {
     try {
       const newBook = await this.bookService.addBook({
         title,
         author,
-        genre,
+        category,
         publishedYear,
       });
       this.model.addBook(newBook);
@@ -89,7 +94,7 @@ class BookController {
     }
   }
 
-  async updateBook(title, author, genre, publishedYear) {
+  async updateBook(title, author, category, publishedYear) {
     const currentBook = this.model.currentBook;
 
     // Check if there is a current book
@@ -100,7 +105,7 @@ class BookController {
           ...currentBook,
           title,
           author,
-          genre,
+          category,
           publishedYear,
         };
 
