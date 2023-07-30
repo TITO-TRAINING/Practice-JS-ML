@@ -1,0 +1,12 @@
+@use '../abtracts/' as *;
+
+body {
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: pxToRem(24);
+
+  @include tablet {
+    // font-size: pxToRem(11);
+    // line-height: pxToRem(16);
+  }
+}
