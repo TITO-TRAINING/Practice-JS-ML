@@ -1,9 +1,9 @@
 class Book {
-  constructor(id, title, author, genre, publishedYear) {
+  constructor(id, title, author, category, publishedYear) {
     this.id = id;
     this.title = title;
     this.author = author;
-    this.genre = genre;
+    this.category = category;
     this.publishedYear = publishedYear;
   }
 }
