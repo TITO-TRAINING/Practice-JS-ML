@@ -1,4 +1,5 @@
-import Toast from './Toast';
+import Table from './components/Table';
+import Pagination from './components/Pagination';
 
 class BookListView {
   constructor(controller) {
@@ -6,7 +7,9 @@ class BookListView {
     this.onDeleteCallback = () => {};
     this.listContainer = document.getElementById('listContainer');
     this.controller = controller;
-    this.toast = new Toast();
+
+    this.currentPage = 1; // Initialize current page to 1
+    this.pagination = null;
     this.listContainer.addEventListener(
       'click',
       this.handleButtonClick.bind(this),
@@ -21,14 +24,6 @@ class BookListView {
     this.onDeleteCallback = callback;
   }
 
-  showErrorMessage(message) {
-    this.toast.show(message, 'error');
-  }
-
-  showSuccessMessage(message) {
-    this.toast.show(message, 'success');
-  }
-
   handleButtonClick(event) {
     const button = event.target;
     if (button.classList.contains('editButton')) {
@@ -40,46 +35,40 @@ class BookListView {
     }
   }
 
-  generateBookRow(book) {
-    return `
-      <tr>
-        <td>${book.id}</td>
-        <td>${book.title}</td>
-        <td>${book.author}</td>
-        <td>${book.genre}</td>
-        <td>${book.publishedYear}</td>
-        <td>
-          <button class="editButton" data-id="${book.id}">Edit</button>
-          <button class="deleteButton" data-id="${book.id}">Delete</button>
-        </td>
-      </tr>
-    `;
+  render() {
+    const books = this.controller.model.getBooks();
+
+    // Calculate total pages based on the number of books and rowsPerPage
+    const rowsPerPage = 5;
+    const totalPages = Math.ceil(books.length / rowsPerPage);
+
+    // Get the books to be displayed on the current page
+    const startIndex = (this.currentPage - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    const booksToShow = books.slice(startIndex, endIndex);
+
+    // Generate the table HTML using the booksToShow array
+    const tableHtml = Table.generateTable(booksToShow);
+    this.listContainer.innerHTML = tableHtml;
+
+    // Initialize or update the pagination controls
+    if (!this.pagination) {
+      this.pagination = new Pagination(
+        totalPages,
+        this.currentPage,
+        this.handlePageChange.bind(this),
+      );
+      this.pagination.render();
+    } else {
+      this.pagination.totalPages = totalPages;
+      this.pagination.currentPage = this.currentPage;
+      this.pagination.render();
+    }
   }
 
-  render() {
-    const booksHtml = this.controller.model
-      .getBooks()
-      .map(this.generateBookRow)
-      .join('');
-    const tableHtml = `
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Genre</th>
-            <th>Published Year</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${booksHtml}
-        </tbody>
-      </table>
-    `;
-
-    this.listContainer.innerHTML = tableHtml;
+  handlePageChange(newPage) {
+    this.currentPage = newPage;
+    this.render();
   }
 }
 

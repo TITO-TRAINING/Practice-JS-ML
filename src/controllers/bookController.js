@@ -27,6 +27,7 @@ class BookController {
       this.formView.clearForm();
       this.model.currentBook;
       this.formView.render();
+      this.formView.hideModal();
     } catch (error) {
       console.log(error);
     }
