@@ -2,13 +2,11 @@ import Table from './components/Table';
 import Pagination from './components/Pagination';
 
 class BookListView {
-  constructor(controller) {
+  constructor() {
     this.onEditCallback = () => {};
     this.onDeleteCallback = () => {};
     this.listContainer = document.getElementById('listContainer');
-    this.controller = controller;
-
-    this.currentPage = 1; // Initialize current page to 1
+    this.currentPage = 1;
     this.pagination = null;
     this.listContainer.addEventListener(
       'click',
