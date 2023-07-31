@@ -3,20 +3,6 @@
     {
       "title": "a",
       "author": "a",
-      "category": "ass",
-      "publishedYear": "22/12/2022",
-      "id": 1
-    },
-    {
-      "title": "saa",
-      "author": "s",
-      "category": "s",
-      "publishedYear": "22/12/2022",
-      "id": 2
-    },
-    {
-      "title": "a",
-      "author": "a",
       "category": "a",
       "publishedYear": "22/12/2022",
       "id": 3
@@ -41,27 +27,6 @@
       "category": "a",
       "publishedYear": "22/12/2022",
       "id": 9
-    },
-    {
-      "title": "â",
-      "author": "a",
-      "category": "a",
-      "publishedYear": "22/12/2022",
-      "id": 10
-    },
-    {
-      "title": "a",
-      "author": "a",
-      "category": "a",
-      "publishedYear": "22/12/2022",
-      "id": 11
-    },
-    {
-      "title": "s",
-      "author": "s",
-      "category": "s",
-      "publishedYear": "22/12/2022",
-      "id": 12
     },
     {
       "title": "s",
@@ -167,6 +132,55 @@
       "category": "x",
       "publishedYear": "22/12/2022",
       "id": 27
+    },
+    {
+      "title": "s",
+      "author": "s",
+      "category": "s",
+      "publishedYear": "22/12/2022",
+      "id": 28
+    },
+    {
+      "title": "s",
+      "author": "s",
+      "category": "s",
+      "publishedYear": "22/12/2022",
+      "id": 29
+    },
+    {
+      "title": "s",
+      "author": "s",
+      "category": "s",
+      "publishedYear": "22/12/2022",
+      "id": 30
+    },
+    {
+      "title": "s",
+      "author": "s",
+      "category": "s",
+      "publishedYear": "22/12/2022",
+      "id": 31
+    },
+    {
+      "title": "s",
+      "author": "s",
+      "category": "s",
+      "publishedYear": "22/12/2022",
+      "id": 32
+    },
+    {
+      "title": "s",
+      "author": "ss",
+      "category": "s",
+      "publishedYear": "22/12/2022",
+      "id": 33
+    },
+    {
+      "title": "s",
+      "author": "s",
+      "category": "ssss",
+      "publishedYear": "22/12/2022",
+      "id": 34
     }
   ]
 }
