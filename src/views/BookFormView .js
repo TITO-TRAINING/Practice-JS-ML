@@ -7,8 +7,7 @@ class BookFormView {
     this.modalOverlay = document.getElementById('modalOverlay');
     this.createBookButton = document.querySelector('.create-book');
     this.createBookButton.addEventListener('click', () => this.render());
-
-    this.form = {};
+    this.form = [];
     this.onSubmitCallback = () => {};
     this.onCancelButtonClickCallback = () => {};
     this.bindEvents();
@@ -94,6 +93,7 @@ class BookFormView {
     const mode = book ? 'edit' : 'add';
 
     // Generate the form HTML using FormRenderer
+
     const formHtml = FormRenderer.render(book, mode);
     this.formContainer.innerHTML = formHtml;
     this.form = document.getElementById('bookForm');
