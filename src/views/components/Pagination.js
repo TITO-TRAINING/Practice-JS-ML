@@ -10,6 +10,7 @@ class Pagination {
       'click',
       this.handleButtonClick.bind(this),
     );
+    this.onPageChange = onPageChange;
   }
 
   handleButtonClick(event) {

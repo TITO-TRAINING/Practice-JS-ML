@@ -103,17 +103,24 @@ class BookController {
       const res = await this.bookService.getAllBooks();
       const books = res.data;
       this.model.setBooks(books);
-      if (this.listView) {
-        this.listView.render();
-      }
+      const booksData = this.model.getBooks(); // Get the actual array of books using getBooks() method
+      this.listView.render(booksData); // Pass the array of books to BookListView.render
     } catch (error) {
       console.error('Error fetching books:', error);
     }
   }
-
+  async handlePageChange(newPage) {
+    try {
+      this.listView.setCurrentPage(newPage); // Set the current page in the listView
+      await this.fetchBooks(); // Fetch and render the books for the new page
+    } catch (error) {
+      console.error('Error handling page change:', error);
+    }
+  }
   async init() {
     try {
       await this.fetchBooks();
+      this.listView.onPageChange((newPage) => this.handlePageChange(newPage));
     } catch (error) {
       console.error('Error initializing the app:', error);
     }
