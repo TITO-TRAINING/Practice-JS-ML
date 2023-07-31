@@ -59,10 +59,8 @@ class BookFormView {
       );
 
       if (Object.keys(errors).length > 0) {
-        // Show error messages using the Toast class
         Object.values(errors).forEach((message) => console.log(message));
       } else {
-        // Form is valid, call the onSubmitCallback
         if (this.onSubmitCallback) {
           this.onSubmitCallback(title, author, category, publishedYear);
         }
