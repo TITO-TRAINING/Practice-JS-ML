@@ -38,7 +38,7 @@ class BookListView {
       const bookId = button.dataset.id;
       console.log(bookId);
       if (bookId) {
-        this.onEditCallback(bookId); // Hãy chắc chắn rằng bạn gọi đúng hàm onEditCallback và truyền vào bookId
+        this.onEditCallback(bookId);
       } else {
         console.error('Invalid bookId:', bookId);
       }
