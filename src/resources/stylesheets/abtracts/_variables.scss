@@ -1,0 +1,15 @@
+@use 'functions' as *;
+
+// Font family
+$primary-font: PlayfairDisplay;
+$Second-font: Raleway-bold;
+$third-font: Raleway;
+
+// Breakpoints
+$medium: 768px;
+$extra-lager: 1200px;
+
+$mobile: calc($medium - 1px);
+$tablet: calc($extra-lager - 1px);
+
+// Colors
