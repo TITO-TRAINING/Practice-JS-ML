@@ -13,6 +13,7 @@ class BookListView {
       'click',
       this.handleButtonClick.bind(this),
     );
+    this.onPageChangeCallback = () => {};
   }
 
   setOnEdit(callback) {
@@ -23,20 +24,35 @@ class BookListView {
     this.onDeleteCallback = callback;
   }
 
+  onPageChange(callback) {
+    this.onPageChangeCallback = callback;
+  }
+
+  setCurrentPage(newPage) {
+    this.currentPage = newPage;
+  }
+
   handleButtonClick(event) {
     const button = event.target;
     if (button.classList.contains('editButton')) {
       const bookId = button.dataset.id;
-      this.onEditCallback(bookId); // Empty function will be called if not set
+      console.log(bookId);
+      if (bookId) {
+        this.onEditCallback(bookId); // Hãy chắc chắn rằng bạn gọi đúng hàm onEditCallback và truyền vào bookId
+      } else {
+        console.error('Invalid bookId:', bookId);
+      }
     } else if (button.classList.contains('deleteButton')) {
       const bookId = button.dataset.id;
-      this.onDeleteCallback(bookId); // Empty function will be called if not set
+      if (bookId) {
+        this.onDeleteCallback(bookId);
+      } else {
+        console.error('Invalid bookId:', bookId);
+      }
     }
   }
 
-  render() {
-    const books = this.controller.model.getBooks();
-
+  render(books) {
     // Calculate total pages based on the number of books and rowsPerPage
     const rowsPerPage = 5;
     const totalPages = Math.ceil(books.length / rowsPerPage);
@@ -67,7 +83,7 @@ class BookListView {
 
   handlePageChange(newPage) {
     this.currentPage = newPage;
-    this.render();
+    this.onPageChangeCallback(newPage);
   }
 }
 
