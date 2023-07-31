@@ -15,75 +15,57 @@ class BookController {
     this.listView.setOnDelete(this.handleDelete.bind(this));
   }
 
-  async handleFormSubmit(title, author, genre, publishedYear) {
+  async handleFormSubmit(title, author, category, publishedYear) {
     try {
       if (this.model.currentBook) {
-        await this.updateBook(title, author, genre, publishedYear);
+        await this.updateBook(title, author, category, publishedYear);
       } else {
-        await this.addBook(title, author, genre, publishedYear);
+        await this.addBook(title, author, category, publishedYear);
       }
 
       await this.fetchBooks();
       this.formView.clearForm();
-      this.formView.showSuccessMessage('Book saved successfully.');
-      this.model.currentBook = null; // Reset currentBook after successful update or add
-      this.formView.render(); // Render the form with the updated state (Add button)
+      this.model.currentBook;
+      this.formView.render();
     } catch (error) {
-      this.formView.showErrorMessage('Error saving book. Please try again.');
+      console.log(error);
     }
   }
 
   async handleEdit(bookId) {
     try {
-      var foundBook = null;
-      await this.bookService
-        .getBookById(bookId)
-        .then((res) => {
-          foundBook = res.data;
-        })
-        .catch((e) => {
-          console.log('Error when get book by id ', e);
-        });
-      if (foundBook) {
-        this.model.currentBook = foundBook;
+      const { data } = await this.bookService.getBookById(bookId);
+      if (data) {
+        this.model.currentBook = data;
         this.formView.render(this.model.currentBook);
       } else {
-        this.formView.showErrorMessage('Book not found or invalid bookId.');
+        console.error('Book not found or invalid bookId.');
       }
     } catch (error) {
-      this.formView.showErrorMessage(
-        'Error while fetching book. Please try again.',
-      );
+      console.error('Error while fetching book. Please try again.');
     }
   }
 
   async handleDelete(bookId) {
     try {
       await this.bookService.deleteBook(bookId).catch((e) => {
-        console.log('Error when delete book', e);
+        console.error('Error when delete book', e);
       });
       this.model.deleteBook(bookId);
-      this.listView.showSuccessMessage('Book deleted successfully.');
       await this.fetchBooks();
     } catch (error) {
-      this.listView.showErrorMessage(
-        'Error while deleting book. Please try again.',
-      );
+      console.error('Error while deleting book', error);
     }
   }
 
-  async addBook(title, author, genre, publishedYear) {
+  async addBook(title, author, category, publishedYear) {
     try {
-      const newBook = await this.bookService
-        .addBook({
-          title,
-          author,
-          genre,
-          publishedYear,
-        })
-        .catch((e) => {
-          console.log('Error when add book', e);
-        });
+      const newBook = await this.bookService.addBook({
+        title,
+        author,
+        category,
+        publishedYear,
+      });
       this.model.addBook(newBook);
     } catch (error) {
       console.error('Error adding book:', error);
@@ -91,21 +73,22 @@ class BookController {
     }
   }
 
-  async updateBook(title, author, genre, publishedYear) {
-    if (this.model.currentBook) {
+  async updateBook(title, author, category, publishedYear) {
+    const currentBook = this.model.currentBook;
+
+    // Check if there is a current book
+    if (currentBook) {
+      // Create an updated book object with the new information
       try {
         const updatedBook = {
-          ...this.model.currentBook,
+          ...currentBook,
           title,
           author,
-          genre,
+          category,
           publishedYear,
         };
-        await this.bookService
-          .updateBook(this.model.currentBook.id, updatedBook)
-          .catch((e) => {
-            console.log('Error when update book', e);
-          });
+
+        await this.bookService.updateBook(currentBook.id, updatedBook);
         this.model.updateBook(updatedBook);
       } catch (error) {
         console.error('Error updating book:', error);
@@ -116,15 +99,8 @@ class BookController {
 
   async fetchBooks() {
     try {
-      var books = null;
-      await this.bookService
-        .getAllBooks()
-        .then((res) => {
-          books = res.data;
-        })
-        .catch((e) => {
-          console.log('Error when fetch books', e);
-        });
+      const res = await this.bookService.getAllBooks();
+      const books = res.data;
       this.model.setBooks(books);
       if (this.listView) {
         this.listView.render();
@@ -137,7 +113,6 @@ class BookController {
   async init() {
     try {
       await this.fetchBooks();
-      this.formView.render();
     } catch (error) {
       console.error('Error initializing the app:', error);
     }
