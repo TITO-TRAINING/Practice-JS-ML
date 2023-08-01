@@ -19,14 +19,9 @@ class BookModel {
     return this.books;
   }
 
-  async addBook(title, author, category, publishedYear) {
+  async addBook(bookData) {
     try {
-      const newBook = await this.bookService.addBook({
-        title,
-        author,
-        category,
-        publishedYear,
-      });
+      const newBook = await this.bookService.addBook(bookData);
       this.books.push(newBook);
     } catch (error) {
       console.error('Error adding book:', error);
@@ -34,7 +29,7 @@ class BookModel {
     }
   }
 
-  async updateBook(title, author, category, publishedYear) {
+  async updateBook(bookData) {
     const currentBook = this.currentBook;
 
     // Check if there is a current book
@@ -42,10 +37,7 @@ class BookModel {
       try {
         const updatedBook = {
           ...currentBook,
-          title,
-          author,
-          category,
-          publishedYear,
+          ...bookData,
         };
 
         await this.bookService.updateBook(currentBook.id, updatedBook);

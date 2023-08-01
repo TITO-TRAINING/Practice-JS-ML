@@ -11,21 +11,21 @@ class BookController {
     this.formView.setOnSubmit(this.handleFormSubmit.bind(this));
     this.listView.setOnEdit(this.handleEdit.bind(this));
     this.listView.setOnDelete(this.handleDelete.bind(this));
-    this.model.onDataChange = this.handleDataChange;
+    this.model.onDataChange = this.handleDataChange.bind(this);
   }
 
-  async handleFormSubmit(title, author, category, publishedYear) {
+  async handleFormSubmit(bookData) {
     try {
       if (this.model.currentBook) {
-        await this.model.updateBook(title, author, category, publishedYear);
+        await this.model.updateBook(bookData);
       } else {
-        await this.model.addBook(title, author, category, publishedYear);
+        await this.model.addBook(bookData);
       }
 
       await this.model.fetchBooks();
       this.model.currentBook;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

@@ -1,6 +1,7 @@
 import FormValidator from '../helpers/FormValidate';
 import FormRenderer from './components/Form';
 import Toast from '../views/components/Toast';
+
 class BookFormView {
   constructor() {
     this.formContainer = document.getElementById('formContainer');
@@ -38,35 +39,39 @@ class BookFormView {
       this.handleButtonClick(event),
     );
   }
+  getFormValues() {
+    return {
+      title: this.getValue('#titleInput'),
+      author: this.getValue('#authorInput'),
+      category: this.getValue('#category'),
+      publishedYear: this.getValue('#publishedYearInput'),
+    };
+  }
+
+  getValue(selector) {
+    const element = this.form.querySelector(selector);
+    return element ? element.value : '';
+  }
 
   handleSubmit(event) {
     event.preventDefault();
-    const form = document.querySelector('form');
-    if (form) {
-      const title = form.querySelector('#titleInput').value;
-      const author = form.querySelector('#authorInput').value;
-      const category = form.querySelector('#category').value;
-      const publishedYear = form.querySelector('#publishedYearInput').value;
+    const bookData = this.getFormValues();
+    const errors = FormValidator.validateForm(
+      bookData.title,
+      bookData.author,
+      bookData.category,
+      bookData.publishedYear,
+    );
 
-      const errors = FormValidator.validateForm(
-        title,
-        author,
-        category,
-        publishedYear,
-      );
-
-      if (Object.keys(errors).length > 0) {
-        Object.values(errors).forEach((message) =>
-          this.toast.showToast(message),
-        );
-      } else {
-        if (this.onSubmitCallback) {
-          this.onSubmitCallback(title, author, category, publishedYear);
-          this.clearForm();
-          this.toast.showToast('Book added successfully!', 'success');
-        }
-        this.hideModal();
+    if (Object.keys(errors).length > 0) {
+      Object.values(errors).forEach((message) => this.toast.showToast(message));
+    } else {
+      if (this.onSubmitCallback) {
+        this.onSubmitCallback(bookData);
+        this.clearForm();
+        this.toast.showToast('Book added successfully!', 'success');
       }
+      this.hideModal();
     }
   }
 
