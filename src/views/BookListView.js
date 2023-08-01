@@ -1,13 +1,13 @@
 import Table from './components/Table';
 import Pagination from './components/Pagination';
-import Toast from './components/Toast';
+// import Toast from './components/Toast';
 
 class BookListView {
-  constructor() {
+  constructor(toast) {
     this.onEditCallback = () => {};
     this.onDeleteCallback = () => {};
     this.listContainer = document.getElementById('listContainer');
-    this.toast = new Toast();
+    this.toast = toast;
 
     this.currentPage = 1;
     this.pagination = '';

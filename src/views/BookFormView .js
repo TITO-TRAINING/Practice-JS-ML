@@ -1,15 +1,14 @@
 import FormValidator from '../helpers/FormValidate';
 import FormRenderer from './components/Form';
-import Toast from '../views/components/Toast';
 
 class BookFormView {
-  constructor() {
+  constructor(toast) {
     this.formContainer = document.getElementById('formContainer');
     this.modalOverlay = document.getElementById('modalOverlay');
     this.createBookButton = document.querySelector('.create-book');
     this.createBookButton.addEventListener('click', () => this.render());
     this.form = [];
-    this.toast = new Toast();
+    this.toast = toast;
 
     this.onSubmitCallback = () => {};
     this.onCancelButtonClickCallback = () => {};
@@ -64,7 +63,9 @@ class BookFormView {
     );
 
     if (Object.keys(errors).length > 0) {
-      Object.values(errors).forEach((message) => this.toast.showToast(message));
+      Object.values(errors).forEach((message) =>
+        this.toast.showToast(message, 'error'),
+      );
     } else {
       if (this.onSubmitCallback) {
         this.onSubmitCallback(bookData);

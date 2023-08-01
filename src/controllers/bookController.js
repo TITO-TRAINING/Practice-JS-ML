@@ -1,12 +1,9 @@
-import BookModel from '../models/bookModel';
-import BookFormView from '../views/BookFormView ';
-import BookListView from '../views/BookListView';
-
 class BookController {
-  constructor() {
-    this.model = new BookModel();
-    this.formView = new BookFormView(this);
-    this.listView = new BookListView(this);
+  constructor(model, formView, listView, searchView) {
+    this.model = model;
+    this.formView = formView;
+    this.listView = listView;
+    this.searchView = searchView;
 
     this.formView.setOnSubmit(this.handleFormSubmit.bind(this));
     this.listView.setOnEdit(this.handleEdit.bind(this));

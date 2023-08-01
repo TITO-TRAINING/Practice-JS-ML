@@ -1,9 +1,8 @@
 import Book from './book';
-import BookService from '../api/BookApi';
 
 class BookModel {
-  constructor() {
-    this.bookService = new BookService();
+  constructor(bookService) {
+    this.bookService = bookService;
     this.books = [];
     this.currentBook = null;
   }

@@ -6,19 +6,19 @@ class FormRenderer {
       <form id="bookForm" data-mode="${mode}">
         <div class="form-group">
           <label for="titleInput">Title:</label>
-          <input type="text" id="titleInput" placeholder="Title" value="${title}" required>
+          <input type="text" id="titleInput" placeholder="Title" value="${title}" >
         </div>
         <div class="form-group">
           <label for="authorInput">Author:</label>
-          <input type="text" id="authorInput" placeholder="Author" value="${author}" required>
+          <input type="text" id="authorInput" placeholder="Author" value="${author}" >
         </div>
         <div class="form-group">
           <label for="category">Category:</label>
-          <input type="text" id="category" placeholder="Category" value="${category}" required>
+          <input type="text" id="category" placeholder="Category" value="${category}" >
         </div>
         <div class="form-group">
           <label for="publishedYearInput">Published Year:</label>
-          <input type="text" id="publishedYearInput" placeholder="dd/mm/yyyy" value="${publishedYear}" required>
+          <input type="text" id="publishedYearInput" placeholder="dd/mm/yyyy" value="${publishedYear}" >
         </div>
         <div class="form-group">
           <button type="submit">${mode === 'edit' ? 'Update' : 'Add'}</button>
