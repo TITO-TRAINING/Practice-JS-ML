@@ -1,11 +1,13 @@
 import Table from './components/Table';
 import Pagination from './components/Pagination';
+import Toast from './components/Toast';
 
 class BookListView {
   constructor() {
     this.onEditCallback = () => {};
     this.onDeleteCallback = () => {};
     this.listContainer = document.getElementById('listContainer');
+    this.toast = new Toast();
 
     this.currentPage = 1; // Initialize current page to 1
     this.pagination = null;
@@ -46,6 +48,7 @@ class BookListView {
       const bookId = button.dataset.id;
       if (bookId) {
         this.onDeleteCallback(bookId);
+        this.toast.showToast('Book deleted successfully!');
       } else {
         console.error('Invalid bookId:', bookId);
       }

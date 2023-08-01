@@ -24,10 +24,7 @@ class BookController {
       }
 
       await this.fetchBooks();
-      this.formView.clearForm();
       this.model.currentBook;
-      this.formView.render();
-      this.formView.hideModal();
     } catch (error) {
       console.log(error);
     }
@@ -49,9 +46,7 @@ class BookController {
 
   async handleDelete(bookId) {
     try {
-      await this.bookService.deleteBook(bookId).catch((e) => {
-        console.error('Error when delete book', e);
-      });
+      await this.bookService.deleteBook(bookId);
       this.model.deleteBook(bookId);
       await this.fetchBooks();
     } catch (error) {
