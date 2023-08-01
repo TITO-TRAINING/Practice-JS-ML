@@ -1,5 +1,5 @@
 import BookModel from '../models/bookModel';
-import BookService from '../api/BookApi';
+// import BookService from '../api/BookApi';
 import BookFormView from '../views/BookFormView ';
 import BookListView from '../views/BookListView';
 
@@ -8,22 +8,23 @@ class BookController {
     this.model = new BookModel();
     this.formView = new BookFormView(this);
     this.listView = new BookListView(this);
-    this.bookService = new BookService();
+    // this.bookService = new BookService();
 
     this.formView.setOnSubmit(this.handleFormSubmit.bind(this));
     this.listView.setOnEdit(this.handleEdit.bind(this));
     this.listView.setOnDelete(this.handleDelete.bind(this));
+    this.model.onDataChange = this.handleDataChange;
   }
 
   async handleFormSubmit(title, author, category, publishedYear) {
     try {
       if (this.model.currentBook) {
-        await this.updateBook(title, author, category, publishedYear);
+        await this.model.updateBook(title, author, category, publishedYear);
       } else {
-        await this.addBook(title, author, category, publishedYear);
+        await this.model.addBook(title, author, category, publishedYear);
       }
 
-      await this.fetchBooks();
+      await this.model.fetchBooks();
       this.model.currentBook;
     } catch (error) {
       console.log(error);
@@ -32,7 +33,7 @@ class BookController {
 
   async handleEdit(bookId) {
     try {
-      const { data } = await this.bookService.getBookById(bookId);
+      const { data } = await this.model.bookService.getBookById(bookId);
       if (data) {
         this.model.currentBook = data;
         this.formView.render(this.model.currentBook);
@@ -46,77 +47,30 @@ class BookController {
 
   async handleDelete(bookId) {
     try {
-      await this.bookService.deleteBook(bookId);
-      this.model.deleteBook(bookId);
-      await this.fetchBooks();
+      await this.model.deleteBook(bookId);
+      await this.model.fetchBooks();
     } catch (error) {
-      console.error('Error while deleting book', error);
+      console.error('Error deleting book', error);
     }
   }
 
-  async addBook(title, author, category, publishedYear) {
-    try {
-      const newBook = await this.bookService.addBook({
-        title,
-        author,
-        category,
-        publishedYear,
-      });
-      this.model.addBook(newBook);
-    } catch (error) {
-      console.error('Error adding book:', error);
-      throw error;
-    }
-  }
-
-  async updateBook(title, author, category, publishedYear) {
-    const currentBook = this.model.currentBook;
-
-    // Check if there is a current book
-    if (currentBook) {
-      // Create an updated book object with the new information
-      try {
-        const updatedBook = {
-          ...currentBook,
-          title,
-          author,
-          category,
-          publishedYear,
-        };
-
-        await this.bookService.updateBook(currentBook.id, updatedBook);
-        this.model.updateBook(updatedBook);
-      } catch (error) {
-        console.error('Error updating book:', error);
-        throw error;
-      }
-    }
-  }
-
-  async fetchBooks() {
-    try {
-      const res = await this.bookService.getAllBooks();
-      const books = res.data;
-      this.model.setBooks(books);
-      const booksData = this.model.getBooks();
-      this.listView.render(booksData);
-    } catch (error) {
-      console.error('Error fetching books:', error);
-    }
-  }
-  async handlePageChange(newPage) {
+  handlePageChange = async (newPage) => {
     try {
       this.listView.setCurrentPage(newPage);
-      await this.fetchBooks();
+      await this.model.fetchBooks();
     } catch (error) {
       console.error('Error handling page change:', error);
     }
-  }
+  };
+
+  handleDataChange = (data) => {
+    this.listView.render(data);
+  };
 
   async init() {
     try {
-      await this.fetchBooks();
-      this.listView.onPageChange((newPage) => this.handlePageChange(newPage));
+      await this.model.fetchBooks();
+      this.listView.onPageChange(this.handlePageChange);
     } catch (error) {
       console.error('Error initializing the app:', error);
     }

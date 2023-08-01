@@ -8,9 +8,9 @@
       "id": 3
     },
     {
-      "title": "s",
-      "author": "s",
-      "category": "s",
+      "title": "a",
+      "author": "a",
+      "category": "a",
       "publishedYear": "22/12/2022",
       "id": 4
     },
@@ -29,25 +29,25 @@
       "id": 9
     },
     {
-      "title": "s",
-      "author": "s",
-      "category": "ssss",
+      "title": "a",
+      "author": "a",
+      "category": "a",
       "publishedYear": "22/12/2022",
-      "id": 38
-    },
-    {
-      "title": "s",
-      "author": "s",
-      "category": "s",
-      "publishedYear": "21/09/2003",
-      "id": 39
+      "id": 41
     },
     {
       "title": "a",
       "author": "a",
-      "category": "aâ",
+      "category": "a",
       "publishedYear": "22/12/2022",
-      "id": 40
+      "id": 42
+    },
+    {
+      "title": "a",
+      "author": "a",
+      "category": "a",
+      "publishedYear": "22/12/2022",
+      "id": 43
     }
   ]
 }

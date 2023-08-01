@@ -20,10 +20,6 @@ class BookFormView {
     this.onSubmitCallback = callback;
   }
 
-  setOnCancelButtonClick(callback) {
-    this.onCancelButtonClickCallback = callback;
-  }
-
   showModal() {
     this.formContainer.style.display = 'block';
     this.modalOverlay.style.display = 'block';
