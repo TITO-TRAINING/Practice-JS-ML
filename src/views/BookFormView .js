@@ -13,7 +13,6 @@ class BookFormView {
     this.onSubmitCallback = () => {};
     this.onCancelButtonClickCallback = () => {};
     this.bindEvents();
-    this.hideModal();
   }
 
   setOnSubmit(callback) {
@@ -64,7 +63,7 @@ class BookFormView {
         if (this.onSubmitCallback) {
           this.onSubmitCallback(title, author, category, publishedYear);
           this.clearForm();
-          this.toast.showToast('Book added successfully!');
+          this.toast.showToast('Book added successfully!', 'success');
         }
         this.hideModal();
       }

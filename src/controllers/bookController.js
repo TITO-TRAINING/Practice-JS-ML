@@ -1,5 +1,4 @@
 import BookModel from '../models/bookModel';
-// import BookService from '../api/BookApi';
 import BookFormView from '../views/BookFormView ';
 import BookListView from '../views/BookListView';
 
@@ -8,7 +7,6 @@ class BookController {
     this.model = new BookModel();
     this.formView = new BookFormView(this);
     this.listView = new BookListView(this);
-    // this.bookService = new BookService();
 
     this.formView.setOnSubmit(this.handleFormSubmit.bind(this));
     this.listView.setOnEdit(this.handleEdit.bind(this));

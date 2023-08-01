@@ -3,9 +3,9 @@ import BookService from '../api/BookApi';
 
 class BookModel {
   constructor() {
+    this.bookService = new BookService();
     this.books = [];
     this.currentBook = null;
-    this.bookService = new BookService(); // Create an instance of BookService
   }
 
   setBooks(books) {
@@ -39,7 +39,6 @@ class BookModel {
 
     // Check if there is a current book
     if (currentBook) {
-      // Create an updated book object with the new information
       try {
         const updatedBook = {
           ...currentBook,
@@ -50,7 +49,7 @@ class BookModel {
         };
 
         await this.bookService.updateBook(currentBook.id, updatedBook);
-        this.updateBookInModel(updatedBook); // Use a separate method to update book in the model
+        this.updateBookInModel(updatedBook);
       } catch (error) {
         console.error('Error updating book:', error);
         throw error;

@@ -9,8 +9,8 @@ class BookListView {
     this.listContainer = document.getElementById('listContainer');
     this.toast = new Toast();
 
-    this.currentPage = 1; // Initialize current page to 1
-    this.pagination = null;
+    this.currentPage = 1;
+    this.pagination = '';
     this.listContainer.addEventListener(
       'click',
       this.handleButtonClick.bind(this),
@@ -38,19 +38,18 @@ class BookListView {
     const button = event.target;
     if (button.classList.contains('editButton')) {
       const bookId = button.dataset.id;
-      console.log(bookId);
       if (bookId) {
         this.onEditCallback(bookId);
       } else {
-        console.error('Invalid bookId:', bookId);
+        this.toast.showToast('Invalid bookId!', 'error');
       }
     } else if (button.classList.contains('deleteButton')) {
       const bookId = button.dataset.id;
       if (bookId) {
         this.onDeleteCallback(bookId);
-        this.toast.showToast('Book deleted successfully!');
+        this.toast.showToast('Book deleted successfully!', 'success');
       } else {
-        console.error('Invalid bookId:', bookId);
+        this.toast.showToast('Invalid bookId!', 'error');
       }
     }
   }
