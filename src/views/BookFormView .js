@@ -3,12 +3,12 @@ import FormRenderer from './components/Form';
 
 class BookFormView {
   constructor(toast) {
-    this.formContainer = document.getElementById('formContainer');
-    this.modalOverlay = document.getElementById('modalOverlay');
+    this.toast = toast;
+    this.formContainer = document.querySelector('#formContainer');
+    this.modalOverlay = document.querySelector('#modalOverlay');
     this.createBookButton = document.querySelector('.create-book');
     this.createBookButton.addEventListener('click', () => this.render());
     this.form = [];
-    this.toast = toast;
 
     this.onSubmitCallback = () => {};
     this.onCancelButtonClickCallback = () => {};
@@ -29,7 +29,6 @@ class BookFormView {
     this.modalOverlay.style.display = 'none';
   }
 
-  // Add a method to show the success toast for validation
   bindEvents() {
     this.formContainer.addEventListener('submit', (event) =>
       this.handleSubmit(event),
@@ -38,18 +37,27 @@ class BookFormView {
       this.handleButtonClick(event),
     );
   }
-  getFormValues() {
-    return {
-      title: this.getValue('#titleInput'),
-      author: this.getValue('#authorInput'),
-      category: this.getValue('#category'),
-      publishedYear: this.getValue('#publishedYearInput'),
-    };
-  }
 
   getValue(selector) {
     const element = this.form.querySelector(selector);
     return element ? element.value : '';
+  }
+
+  getFormValues() {
+    const formElements = {
+      title: '#titleInput',
+      author: '#authorInput',
+      category: '#category',
+      publishedYear: '#publishedYearInput',
+    };
+
+    return Object.entries(formElements).reduce(
+      (formValues, [key, selector]) => {
+        formValues[key] = this.getValue(selector);
+        return formValues;
+      },
+      {},
+    );
   }
 
   handleSubmit(event) {

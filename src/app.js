@@ -1,4 +1,3 @@
-import './views/bookView.js';
 import BookController from './controllers/bookController';
 import BookModel from './models/bookModel.js';
 import BookFormView from './views/BookFormView ';

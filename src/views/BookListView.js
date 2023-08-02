@@ -1,12 +1,11 @@
 import Table from './components/Table';
 import Pagination from './components/Pagination';
-// import Toast from './components/Toast';
 
 class BookListView {
   constructor(toast) {
     this.onEditCallback = () => {};
     this.onDeleteCallback = () => {};
-    this.listContainer = document.getElementById('listContainer');
+    this.listContainer = document.querySelector('#listContainer');
     this.toast = toast;
 
     this.currentPage = 1;
@@ -36,14 +35,14 @@ class BookListView {
 
   handleButtonClick(event) {
     const button = event.target;
-    if (button.classList.contains('editButton')) {
+    if (button.classList.contains('edit-button')) {
       const bookId = button.dataset.id;
       if (bookId) {
         this.onEditCallback(bookId);
       } else {
         this.toast.showToast('Invalid bookId!', 'error');
       }
-    } else if (button.classList.contains('deleteButton')) {
+    } else if (button.classList.contains('delete-button')) {
       const bookId = button.dataset.id;
       if (bookId) {
         this.onDeleteCallback(bookId);

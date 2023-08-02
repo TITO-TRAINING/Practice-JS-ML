@@ -1,9 +1,8 @@
 class BookController {
-  constructor(model, formView, listView, searchView) {
+  constructor(model, formView, listView) {
     this.model = model;
     this.formView = formView;
     this.listView = listView;
-    this.searchView = searchView;
 
     this.formView.setOnSubmit(this.handleFormSubmit.bind(this));
     this.listView.setOnEdit(this.handleEdit.bind(this));
