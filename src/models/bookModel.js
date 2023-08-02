@@ -1,47 +1,82 @@
 import Book from './book';
 
 class BookModel {
-  constructor() {
+  constructor(bookService) {
+    this.bookService = bookService;
     this.books = [];
     this.currentBook = null;
   }
 
   setBooks(books) {
-    this.books = books.map(
-      (bookData) =>
-        new Book(
-          bookData.id,
-          bookData.title,
-          bookData.author,
-          bookData.genre,
-          bookData.publishedYear,
-        ),
-    );
+    this.books = books.map((bookData) => {
+      const { id, title, author, category, publishedYear } = bookData;
+      return new Book(id, title, author, category, publishedYear);
+    });
   }
 
   getBooks() {
     return this.books;
   }
 
-  addBook(book) {
-    this.books.push(book);
-  }
-
-  updateBook(updatedBook) {
-    const index = this.books.findIndex((book) => book.id === updatedBook.id);
-    if (index !== -1) {
-      this.books[index] = new Book(
-        updatedBook.id,
-        updatedBook.title,
-        updatedBook.author,
-        updatedBook.genre,
-        updatedBook.publishedYear,
-      );
+  async addBook(bookData) {
+    try {
+      const newBook = await this.bookService.addBook(bookData);
+      this.books.push(newBook);
+    } catch (error) {
+      console.error('Error adding book:', error);
+      throw error;
     }
   }
 
-  deleteBook(bookId) {
-    this.books = this.books.filter((book) => book.id !== bookId);
+  async updateBook(bookData) {
+    const currentBook = this.currentBook;
+
+    // Check if there is a current book
+    if (currentBook) {
+      try {
+        const updatedBook = {
+          ...currentBook,
+          ...bookData,
+        };
+
+        await this.bookService.updateBook(currentBook.id, updatedBook);
+        this.updateBookInModel(updatedBook);
+      } catch (error) {
+        console.error('Error updating book:', error);
+        throw error;
+      }
+    }
+  }
+
+  async deleteBook(bookId) {
+    try {
+      await this.bookService.deleteBook(bookId);
+      this.books = this.books.filter((book) => book.id !== bookId);
+    } catch (error) {
+      console.error('Error deleting book:', error);
+      throw error;
+    }
+  }
+
+  updateBookInModel(updatedBook) {
+    const index = this.books.findIndex((book) => book.id === updatedBook.id);
+    if (index !== -1) {
+      const { id, title, author, category, publishedYear } = updatedBook;
+      this.books[index] = new Book(id, title, author, category, publishedYear);
+    }
+  }
+
+  async fetchBooks() {
+    try {
+      const res = await this.bookService.getAllBooks();
+      const books = res.data;
+      this.setBooks(books);
+
+      this.onDataChange && this.onDataChange(this.getBooks());
+    } catch (error) {
+      console.error('Error fetching books:', error);
+      throw error;
+    }
   }
 }
 

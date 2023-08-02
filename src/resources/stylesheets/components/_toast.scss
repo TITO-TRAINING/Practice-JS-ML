@@ -1,10 +1,12 @@
 #toastContainer {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
 }
 
-.toast {
+.toasts {
   background-color: #333;
   color: #fff;
   padding: 10px;
@@ -13,10 +15,10 @@
   opacity: 0.9;
 }
 
-.toast.success {
+.toasts.success {
   background-color: #4caf50;
 }
 
-.toast.error {
-  background-color: #f44336;
+.toasts.error {
+  background-color: red;
 }
