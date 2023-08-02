@@ -27,15 +27,10 @@ class BookController {
 
   async handleEdit(bookId) {
     try {
-      const { data } = await this.model.bookService.getBookById(bookId);
-      if (data) {
-        this.model.currentBook = data;
-        this.formView.render(this.model.currentBook);
-      } else {
-        console.error('Book not found or invalid bookId.');
-      }
+      await this.model.Edit(bookId);
+      await this.formView.render(this.model.currentBook);
     } catch (error) {
-      console.error('Error while fetching book. Please try again.');
+      console.error(error);
     }
   }
 

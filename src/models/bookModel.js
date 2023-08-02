@@ -28,6 +28,14 @@ class BookModel {
     }
   }
 
+  updateBookInModel(updatedBook) {
+    const index = this.books.findIndex((book) => book.id === updatedBook.id);
+    if (index !== -1) {
+      const { id, title, author, category, publishedYear } = updatedBook;
+      this.books[index] = new Book(id, title, author, category, publishedYear);
+    }
+  }
+
   async updateBook(bookData) {
     const currentBook = this.currentBook;
 
@@ -58,11 +66,16 @@ class BookModel {
     }
   }
 
-  updateBookInModel(updatedBook) {
-    const index = this.books.findIndex((book) => book.id === updatedBook.id);
-    if (index !== -1) {
-      const { id, title, author, category, publishedYear } = updatedBook;
-      this.books[index] = new Book(id, title, author, category, publishedYear);
+  async Edit(bookId) {
+    try {
+      const { data } = await this.bookService.getBookById(bookId);
+      if (data) {
+        this.currentBook = data;
+      } else {
+        console.error('Book not found or invalid bookId.');
+      }
+    } catch (error) {
+      console.error('Error while fetching book. Please try again.');
     }
   }
 
