@@ -10,6 +10,13 @@ class BookController {
     this.model.onDataChange = this.handleDataChange.bind(this);
   }
 
+  /**
+   * Handles the form submission for adding or updating a book.
+   * If a current book exists, it updates the book data.
+   * If a current book does not exist, it adds a new book.
+   * Fetches the updated list of books after the operation.
+   * @param {Object} bookData - The data of the book to be added or updated.
+   */
   async handleFormSubmit(bookData) {
     try {
       if (this.model.currentBook) {

@@ -51,13 +51,12 @@ class BookFormView {
       publishedYear: '#publishedYearInput',
     };
 
-    return Object.entries(formElements).reduce(
-      (formValues, [key, selector]) => {
-        formValues[key] = this.getValue(selector);
-        return formValues;
-      },
-      {},
-    );
+    const formValues = {};
+    for (const [key, selector] of Object.entries(formElements)) {
+      formValues[key] = this.getValue(selector);
+    }
+
+    return formValues;
   }
 
   handleSubmit(event) {
@@ -71,17 +70,18 @@ class BookFormView {
     );
 
     if (Object.keys(errors).length > 0) {
-      Object.values(errors).forEach((message) =>
-        this.toast.showToast(message, 'error'),
-      );
-    } else {
-      if (this.onSubmitCallback) {
-        this.onSubmitCallback(bookData);
-        this.clearForm();
-        this.toast.showToast('Book added successfully!', 'success');
-      }
-      this.hideModal();
+      Object.values(errors).forEach((message) => {
+        this.toast.showToast(message, 'error');
+      });
+      return;
     }
+
+    if (this.onSubmitCallback) {
+      this.onSubmitCallback(bookData);
+      this.clearForm();
+      this.toast.showToast('Book added successfully!', 'success');
+    }
+    this.hideModal();
   }
 
   handleButtonClick(event) {

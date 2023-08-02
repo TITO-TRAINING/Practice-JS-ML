@@ -35,15 +35,15 @@ class BookListView {
 
   handleButtonClick(event) {
     const button = event.target;
+    const bookId = button.dataset.id;
+
     if (button.classList.contains('edit-button')) {
-      const bookId = button.dataset.id;
       if (bookId) {
         this.onEditCallback(bookId);
       } else {
         this.toast.showToast('Invalid bookId!', 'error');
       }
     } else if (button.classList.contains('delete-button')) {
-      const bookId = button.dataset.id;
       if (bookId) {
         this.onDeleteCallback(bookId);
         this.toast.showToast('Book deleted successfully!', 'success');
@@ -74,12 +74,11 @@ class BookListView {
         this.currentPage,
         this.handlePageChange.bind(this),
       );
-      this.pagination.render();
     } else {
       this.pagination.totalPages = totalPages;
       this.pagination.currentPage = this.currentPage;
-      this.pagination.render();
     }
+    this.pagination.render();
   }
 
   handlePageChange(newPage) {
