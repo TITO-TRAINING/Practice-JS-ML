@@ -18,7 +18,7 @@ class FormRenderer {
         </div>
         <div class="form-group">
           <label for="publishedYearInput">Published Year:</label>
-          <input type="text" id="publishedYearInput" placeholder="dd/mm/yyyy" value="${publishedYear}" >
+          <input type="text" id="publishedYearInput" placeholder="Published Year" value="${publishedYear}" >
         </div>
         <div class="form-group">
           <button type="submit">${mode === 'edit' ? 'Update' : 'Add'}</button>
