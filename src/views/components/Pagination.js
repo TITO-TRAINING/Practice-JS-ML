@@ -15,7 +15,9 @@ class Pagination {
 
   handleButtonClick(event) {
     const targetButton = event.target.closest('.paginationButton');
-    if (!targetButton) return;
+    if (!targetButton) {
+      return;
+    }
 
     const newPage = parseInt(targetButton.dataset.page);
     if (this.currentPage !== newPage) {
@@ -27,7 +29,6 @@ class Pagination {
 
   render() {
     let paginationHTML = '';
-
     const maxPagesToShow = 5;
 
     if (this.totalPages <= maxPagesToShow) {
@@ -73,13 +74,8 @@ class Pagination {
   }
 
   renderButton(page) {
-    return `
-      <button class="paginationButton ${
-        page === this.currentPage ? 'active' : ''
-      }" data-page="${page}">
-        ${page}
-      </button>
-    `;
+    const activeClass = page === this.currentPage ? 'active' : '';
+    return `<button class="paginationButton ${activeClass}" data-page="${page}">${page}</button>`;
   }
 
   renderEllipsis() {

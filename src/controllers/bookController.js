@@ -1,9 +1,8 @@
 class BookController {
-  constructor(model, formView, listView, searchView) {
+  constructor(model, formView, listView) {
     this.model = model;
     this.formView = formView;
     this.listView = listView;
-    this.searchView = searchView;
 
     this.formView.setOnSubmit(this.handleFormSubmit.bind(this));
     this.listView.setOnEdit(this.handleEdit.bind(this));
@@ -11,6 +10,13 @@ class BookController {
     this.model.onDataChange = this.handleDataChange.bind(this);
   }
 
+  /**
+   * Handles the form submission for adding or updating a book.
+   * If a current book exists, it updates the book data.
+   * If a current book does not exist, it adds a new book.
+   * Fetches the updated list of books after the operation.
+   * @param {Object} bookData - The data of the book to be added or updated.
+   */
   async handleFormSubmit(bookData) {
     try {
       if (this.model.currentBook) {
@@ -28,15 +34,10 @@ class BookController {
 
   async handleEdit(bookId) {
     try {
-      const { data } = await this.model.bookService.getBookById(bookId);
-      if (data) {
-        this.model.currentBook = data;
-        this.formView.render(this.model.currentBook);
-      } else {
-        console.error('Book not found or invalid bookId.');
-      }
+      await this.model.Edit(bookId);
+      await this.formView.render(this.model.currentBook);
     } catch (error) {
-      console.error('Error while fetching book. Please try again.');
+      console.error(error);
     }
   }
 

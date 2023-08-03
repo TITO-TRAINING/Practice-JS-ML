@@ -12,7 +12,7 @@ button {
 }
 
 /* Add/Edit buttons */
-.editButton {
+.edit-button {
   display: inline-block;
   background-color: #007bff;
   color: #fff;
@@ -23,12 +23,12 @@ button {
   padding: 8px 16px;
 }
 
-.editButton:hover {
+.edit-button:hover {
   background-color: #0056b3;
 }
 
 /* Delete buttons */
-.deleteButton {
+.delete-button {
   display: inline-block;
   background-color: #dc3545;
   color: #fff;
@@ -39,6 +39,6 @@ button {
   padding: 8px 16px;
 }
 
-.deleteButton:hover {
+.delete-button:hover {
   background-color: #c82333;
 }

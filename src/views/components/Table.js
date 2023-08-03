@@ -1,4 +1,3 @@
-// Table.js
 class Table {
   static generateBookRow(book) {
     const { id, title, author, category, publishedYear } = book;
@@ -11,8 +10,8 @@ class Table {
         <td>${category}</td>
         <td>${publishedYear}</td>
         <td>
-          <button class="editButton" data-id="${id}">Edit</button>
-          <button class="deleteButton" data-id="${id}">Delete</button>
+          <button class="edit-button" data-id="${id}">Edit</button>
+          <button class="delete-button" data-id="${id}">Delete</button>
         </td>
       </tr>
     `;
