@@ -1,13 +1,14 @@
 import Table from './components/Table';
 import Pagination from './components/Pagination';
+import debounce from './components/debounce';
 
 class BookListView {
   constructor(toast) {
     this.onEditCallback = () => {};
     this.onDeleteCallback = () => {};
+    this.onSearchCallback = () => {}; // New callback for search
     this.listContainer = document.querySelector('#listContainer');
     this.toast = toast;
-
     this.currentPage = 1;
     this.pagination = '';
     this.listContainer.addEventListener(
@@ -15,6 +16,11 @@ class BookListView {
       this.handleButtonClick.bind(this),
     );
     this.onPageChangeCallback = () => {};
+    this.searchInput = document.querySelector('#searchInput');
+    this.searchInput.addEventListener(
+      'input',
+      this.handleSearchInputDebounced.bind(this),
+    );
   }
 
   setOnEdit(callback) {
@@ -25,6 +31,11 @@ class BookListView {
     this.onDeleteCallback = callback;
   }
 
+  setOnSearch(callback) {
+    // Added this method
+    this.onSearchCallback = callback;
+  }
+
   onPageChange(callback) {
     this.onPageChangeCallback = callback;
   }
@@ -33,6 +44,14 @@ class BookListView {
     this.currentPage = newPage;
   }
 
+  // handleSearchInput(event) {
+  //   const searchTerm = event.target.value.trim();
+  //   this.debouncedSearch(searchTerm);
+  // }
+
+  // performSearch(searchTerm) {
+  //   this.onSearchCallback(searchTerm);
+  // }
   handleButtonClick(event) {
     const button = event.target;
     const bookId = button.dataset.id;
@@ -53,6 +72,11 @@ class BookListView {
     }
   }
 
+  handleSearchInputDebounced = debounce((event) => {
+    const searchTerm = event.target.value;
+    this.onSearchCallback(searchTerm);
+  }, 300);
+
   render(books) {
     // Calculate total pages based on the number of books and rowsPerPage
     const rowsPerPage = 5;
@@ -64,8 +88,13 @@ class BookListView {
     const booksToShow = books.slice(startIndex, endIndex);
 
     // Generate the table HTML using the booksToShow array
-    const tableHtml = Table.generateTable(booksToShow);
-    this.listContainer.innerHTML = tableHtml;
+    if (booksToShow.length > 0) {
+      const tableHtml = Table.generateTable(booksToShow);
+      this.listContainer.innerHTML = tableHtml;
+    } else {
+      // Nếu không có sách, hiển thị thông báo "No data"
+      this.listContainer.innerHTML = '<p class="no-data">No data</p>';
+    }
 
     // Initialize or update the pagination controls
     if (!this.pagination) {

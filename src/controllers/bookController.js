@@ -8,6 +8,7 @@ class BookController {
     this.listView.setOnEdit(this.handleEdit.bind(this));
     this.listView.setOnDelete(this.handleDelete.bind(this));
     this.model.onDataChange = this.handleDataChange.bind(this);
+    this.listView.setOnSearch(this.handleSearch.bind(this));
   }
 
   async handleFormSubmit(bookData) {
@@ -56,10 +57,20 @@ class BookController {
     this.listView.render(data);
   };
 
+  async handleSearch(searchTerm) {
+    try {
+      const filteredBooks = await this.model.searchBooks(searchTerm);
+      this.listView.render(filteredBooks);
+    } catch (error) {
+      console.error('Error searching books:', error);
+    }
+  }
+
   async init() {
     try {
       await this.model.fetchBooks();
       this.listView.onPageChange(this.handlePageChange);
+      this.listView.setOnSearch(this.handleSearch.bind(this));
     } catch (error) {
       console.error('Error initializing the app:', error);
     }
