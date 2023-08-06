@@ -104,9 +104,6 @@ class BookFormView {
 
   render(book) {
     const mode = book ? 'edit' : 'add';
-
-    // Generate the form HTML using FormRenderer
-
     const formHtml = FormRenderer.render(book, mode);
     this.formContainer.innerHTML = formHtml;
     this.form = document.getElementById('bookForm');
