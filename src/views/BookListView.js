@@ -62,7 +62,7 @@ class BookListView {
   handleSearchInputDebounced = debounce((event) => {
     const searchTerm = event.target.value;
     this.onSearchCallback(searchTerm);
-  }, 300);
+  }, 500);
 
   render = (books) => {
     const rowsPerPage = 5;

@@ -85,7 +85,8 @@ class BookModel {
         return (
           book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          book.category.toLowerCase().includes(searchTerm.toLowerCase())
+          book.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          book.publishedYear.toLowerCase().includes(searchTerm.toLowerCase())
         );
       });
 
