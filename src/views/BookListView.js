@@ -1,6 +1,8 @@
 import Table from './components/Table';
 import Pagination from './components/Pagination';
 import debounce from '../helpers/debounce';
+import messages from '../constants/message';
+import { TOAST } from '../constants/type';
 
 class BookListView {
   constructor(toast) {
@@ -11,39 +13,33 @@ class BookListView {
     this.toast = toast;
     this.currentPage = 1;
     this.pagination = '';
-    this.listContainer.addEventListener(
-      'click',
-      this.handleButtonClick.bind(this),
-    );
+    this.listContainer.addEventListener('click', this.handleButtonClick);
     this.onPageChangeCallback = () => {};
     this.searchInput = document.querySelector('#searchInput');
-    this.searchInput.addEventListener(
-      'input',
-      this.handleSearchInputDebounced.bind(this),
-    );
+    this.searchInput.addEventListener('input', this.handleSearchInputDebounced);
   }
 
-  setOnEdit(callback) {
+  setOnEdit = (callback) => {
     this.onEditCallback = callback;
-  }
+  };
 
-  setOnDelete(callback) {
+  setOnDelete = (callback) => {
     this.onDeleteCallback = callback;
-  }
+  };
 
-  setOnSearch(callback) {
+  setOnSearch = (callback) => {
     this.onSearchCallback = callback;
-  }
+  };
 
-  onPageChange(callback) {
+  onPageChange = (callback) => {
     this.onPageChangeCallback = callback;
-  }
+  };
 
   setCurrentPage(newPage) {
     this.currentPage = newPage;
   }
 
-  handleButtonClick(event) {
+  handleButtonClick = (event) => {
     const button = event.target;
     const bookId = button.dataset.id;
 
@@ -51,60 +47,53 @@ class BookListView {
       if (bookId) {
         this.onEditCallback(bookId);
       } else {
-        this.toast.showToast('Invalid bookId!', 'error');
+        this.toast.showToast(messages.invalidBookID, TOAST.ERROR);
       }
     } else if (button.classList.contains('delete-button')) {
       if (bookId) {
         this.onDeleteCallback(bookId);
-        this.toast.showToast('Book deleted successfully!', 'success');
+        this.toast.showToast(messages.deleteSuccess, TOAST.SUCCESS);
       } else {
-        this.toast.showToast('Invalid bookId!', 'error');
+        this.toast.showToast(messages.invalidBookID, TOAST.ERROR);
       }
     }
-  }
+  };
 
   handleSearchInputDebounced = debounce((event) => {
     const searchTerm = event.target.value;
     this.onSearchCallback(searchTerm);
   }, 300);
 
-  render(books) {
-    // Calculate total pages based on the number of books and rowsPerPage
+  render = (books) => {
     const rowsPerPage = 5;
     const totalPages = Math.ceil(books.length / rowsPerPage);
-
-    // Get the books to be displayed on the current page
     const startIndex = (this.currentPage - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
     const booksToShow = books.slice(startIndex, endIndex);
 
-    // Generate the table HTML using the booksToShow array
-    if (booksToShow.length > 0) {
-      const tableHtml = Table.generateTable(booksToShow);
-      this.listContainer.innerHTML = tableHtml;
-    } else {
-      // Nếu không có sách, hiển thị thông báo "No data"
-      this.listContainer.innerHTML = '<p class="no-data">No data</p>';
-    }
+    const tableHtml =
+      booksToShow.length > 0
+        ? Table.generateTable(booksToShow)
+        : '<p class="no-data">No data</p>';
+    this.listContainer.innerHTML = tableHtml;
 
-    // Initialize or update the pagination controls
     if (!this.pagination) {
       this.pagination = new Pagination(
         totalPages,
         this.currentPage,
-        this.handlePageChange.bind(this),
+        this.handlePageChange,
       );
     } else {
       this.pagination.totalPages = totalPages;
       this.pagination.currentPage = this.currentPage;
     }
     this.pagination.render();
-  }
+  };
 
-  handlePageChange(newPage) {
+  handlePageChange = async (newPage) => {
     this.currentPage = newPage;
     this.onPageChangeCallback(newPage);
-  }
+  };
 }
 
 export default BookListView;
