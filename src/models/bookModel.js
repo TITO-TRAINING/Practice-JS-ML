@@ -96,8 +96,6 @@ class BookModel {
 
   async searchBooks(searchTerm) {
     try {
-      // Perform search logic and return filtered books
-      // This is a placeholder for your actual search implementation
       const filteredBooks = this.books.filter((book) => {
         return (
           book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -115,7 +113,6 @@ class BookModel {
 
   async fetchBooks() {
     try {
-      // Fetch books from bookService
       const res = await this.bookService.getAllBooks();
       const books = res.data;
       this.setBooks(books);

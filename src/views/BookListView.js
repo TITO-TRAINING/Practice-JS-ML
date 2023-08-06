@@ -1,12 +1,12 @@
 import Table from './components/Table';
 import Pagination from './components/Pagination';
-import debounce from './components/debounce';
+import debounce from '../helpers/debounce';
 
 class BookListView {
   constructor(toast) {
     this.onEditCallback = () => {};
     this.onDeleteCallback = () => {};
-    this.onSearchCallback = () => {}; // New callback for search
+    this.onSearchCallback = () => {};
     this.listContainer = document.querySelector('#listContainer');
     this.toast = toast;
     this.currentPage = 1;
@@ -32,7 +32,6 @@ class BookListView {
   }
 
   setOnSearch(callback) {
-    // Added this method
     this.onSearchCallback = callback;
   }
 
@@ -44,14 +43,6 @@ class BookListView {
     this.currentPage = newPage;
   }
 
-  // handleSearchInput(event) {
-  //   const searchTerm = event.target.value.trim();
-  //   this.debouncedSearch(searchTerm);
-  // }
-
-  // performSearch(searchTerm) {
-  //   this.onSearchCallback(searchTerm);
-  // }
   handleButtonClick(event) {
     const button = event.target;
     const bookId = button.dataset.id;
