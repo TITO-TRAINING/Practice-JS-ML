@@ -1,5 +1,3 @@
-import { TOAST } from '../constants/type';
-
 class BookController {
   constructor(model, formView, listView) {
     this.model = model;
@@ -24,7 +22,7 @@ class BookController {
       await this.model.fetchBooks();
       this.model.currentBook = null;
     } catch (error) {
-      TOAST.ERROR(error);
+      console.error(error);
     }
   }
 
@@ -33,7 +31,7 @@ class BookController {
       await this.model.Edit(bookId);
       await this.formView.render(this.model.currentBook);
     } catch (error) {
-      TOAST.ERROR(error);
+      console.error(error);
     }
   }
 
@@ -42,7 +40,7 @@ class BookController {
       await this.model.deleteBook(bookId);
       await this.model.fetchBooks();
     } catch (error) {
-      TOAST.ERROR(error);
+      console.error('Error deleting book', error);
     }
   }
 
@@ -51,7 +49,7 @@ class BookController {
       this.listView.setCurrentPage(newPage);
       await this.model.fetchBooks();
     } catch (error) {
-      TOAST.ERROR(error);
+      console.error('Error handling page change:', error);
     }
   };
 
@@ -64,7 +62,7 @@ class BookController {
       const filteredBooks = await this.model.searchBooks(searchTerm);
       this.listView.render(filteredBooks);
     } catch (error) {
-      TOAST.ERROR(error);
+      console.error('Error searching books:', error);
     }
   }
 
@@ -74,7 +72,7 @@ class BookController {
       this.listView.onPageChange(this.handlePageChange);
       this.listView.setOnSearch(this.handleSearch.bind(this));
     } catch (error) {
-      TOAST.ERROR(error);
+      console.error('Error initializing the app:', error);
     }
   }
 }
