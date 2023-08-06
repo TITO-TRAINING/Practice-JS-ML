@@ -94,6 +94,25 @@ class BookModel {
     }
   }
 
+  async searchBooks(searchTerm) {
+    try {
+      // Perform search logic and return filtered books
+      // This is a placeholder for your actual search implementation
+      const filteredBooks = this.books.filter((book) => {
+        return (
+          book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          book.category.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      });
+
+      return filteredBooks;
+    } catch (error) {
+      console.error('Error searching books:', error);
+      throw error;
+    }
+  }
+
   async fetchBooks() {
     try {
       // Fetch books from bookService
