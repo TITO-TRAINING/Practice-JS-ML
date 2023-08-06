@@ -5,7 +5,7 @@ class Pagination {
     this.totalPages = totalPages;
     this.currentPage = currentPage;
     this.onPageChange = onPageChange;
-    this.paginationContainer = document.getElementById('paginationContainer');
+    this.paginationContainer = document.querySelector('#paginationContainer');
     this.paginationContainer.addEventListener(
       'click',
       this.handleButtonClick.bind(this),
