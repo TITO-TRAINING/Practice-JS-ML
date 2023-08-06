@@ -1,5 +1,7 @@
 import FormValidator from '../helpers/FormValidate';
 import FormRenderer from './components/Form';
+import messages from '../constants/message';
+import { TOAST, ACTION_FORM } from '../constants/type';
 
 class BookFormView {
   constructor(toast) {
@@ -71,7 +73,7 @@ class BookFormView {
 
     if (Object.keys(errors).length > 0) {
       Object.values(errors).forEach((message) => {
-        this.toast.showToast(message, 'error');
+        this.toast.showToast(message, TOAST.ERROR);
       });
       return;
     }
@@ -79,7 +81,7 @@ class BookFormView {
     if (this.onSubmitCallback) {
       this.onSubmitCallback(bookData);
       this.clearForm();
-      this.toast.showToast('Book added successfully!', 'success');
+      this.toast.showToast(messages.addSuccess, TOAST.SUCCESS);
     }
     this.hideModal();
   }
@@ -87,11 +89,8 @@ class BookFormView {
   handleButtonClick(event) {
     if (event.target.id === 'cancelButton') {
       this.clearForm();
-
-      // Check if the form was used for editing (book object provided)
-      // If it was, reset the form to "Add" mode
-      if (this.form && this.form.dataset.mode === 'edit') {
-        this.render(); // Render the form without a book object, which sets the button label to "Add"
+      if (this.form && this.form.dataset.mode === ACTION_FORM.UPDATE) {
+        this.render();
       }
     }
   }
@@ -103,10 +102,10 @@ class BookFormView {
   }
 
   render(book) {
-    const mode = book ? 'edit' : 'add';
+    const mode = book ? ACTION_FORM.UPDATE : ACTION_FORM.ADD;
     const formHtml = FormRenderer.render(book, mode);
     this.formContainer.innerHTML = formHtml;
-    this.form = document.getElementById('bookForm');
+    this.form = document.querySelector('#bookForm');
 
     const cancelButton = this.formContainer.querySelector('#cancelButton');
     if (cancelButton) {
